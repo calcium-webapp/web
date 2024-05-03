@@ -12,10 +12,10 @@ export default function Navbar() {
       <div className="mx-auto max-w-screen-xl flex items-center h-full justify-between">
         <div className="flex items-center gap-2">
           <div className="block dark:hidden">
-            <Image src={Logo} width={40} height={40} alt="Logo" />
+            <Image src={Logo} className="h-[40px] w-[40px]" alt="Logo" />
           </div>
           <div className="hidden dark:block">
-            <Image src={LogoDark} width={40} height={40} alt="Logo" />
+            <Image src={LogoDark} className="h-[40px] w-[40px]" alt="Logo" />
           </div>
           <span className="brand font-bold text-lg">Calcium</span>
           <Badge>beta</Badge>
