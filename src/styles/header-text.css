@@ -8,12 +8,19 @@
 .code-word {
   font-family: "JetBrains Mono", monospace;
   overflow: hidden; /* Ensures the content is not revealed until the animation */
-  border-right: 0.15em solid white;
   white-space: nowrap; /* Keeps the content on a single line */
   margin: 0 auto; /* Gives that scrolling effect as the typing happens */
-  animation: 
-    typing 1s steps(4, end),
-    blink-caret .75s step-end infinite;
+  animation: typing 1s steps(4, end);
+}
+
+.code-word.light {
+  border-right: 0.15em solid black;
+  animation: blink-caret-light 0.75s step-end infinite;
+}
+
+.code-word.dark {
+  border-right: 0.15em solid white;
+  animation: blink-caret-dark 0.75s step-end infinite;
 }
 
 /* The typing effect */
@@ -27,7 +34,16 @@
 }
 
 /* The typewriter cursor effect */
-@keyframes blink-caret {
+@keyframes blink-caret-light {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: black;
+  }
+}
+@keyframes blink-caret-dark {
   from,
   to {
     border-color: transparent;
