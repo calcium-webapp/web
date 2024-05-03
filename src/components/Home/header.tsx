@@ -1,10 +1,12 @@
+import "@/styles/header-text.css"
+
 export default function Header() {
   return (
     <div className="flex justify-center items-center w-full mt-72">
       <div className="text-center">
         <div className="main-text text-8xl">
-          <p>Minds unchained,</p>
-          <p>code unrestrained</p>
+          <p><span className="mind-word text-9xl">Minds</span> unchained,</p>
+          <div><div className="inline-block align-top"><p className="code-word inline-block">code</p></div> unrestrained</div>
         </div>
         <div className="main-text">
           <p>
