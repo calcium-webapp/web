@@ -1,4 +1,5 @@
-import Navbar from "@/components/navbar-home";
+import Navbar from "@/components/Home/navbar";
+import Header from "@/components/Home/header";
 import "../styles/home-bg.css";
 
 export default function Home() {
@@ -9,6 +10,7 @@ export default function Home() {
       <div className="home-bg-dark hidden dark:block"></div>
 
       <Navbar />
+      <Header />
     </>
   );
 }

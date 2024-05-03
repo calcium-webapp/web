@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Github, LogIn, Pencil } from "lucide-react";
 import Image from "next/image";
-import { ModeToggle } from "./ownui/theme-toggle";
+import { ModeToggle } from "@/components/ownui/theme-toggle";
 import { Badge } from "@/components/ui/badge";
-import Logo from "../../public/logo.png";
-import LogoDark from "../../public/logo-dark.png";
+import Logo from "../../../public/logo.png";
+import LogoDark from "../../../public/logo-dark.png";
 
 export default function Navbar() {
   return (
