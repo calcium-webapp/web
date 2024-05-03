@@ -1,10 +1,11 @@
 import "@/styles/header-text.css";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Squiggle from "../../../public/squiggle.svg";
 
 export default function Header() {
   return (
-    <div className="flex justify-center items-center w-full mt-64">
+    <div className="flex justify-center items-center w-full mt-60">
       <div className="text-center">
         <div className="main-text text-8xl">
           <p>
@@ -47,6 +48,7 @@ export default function Header() {
             ingenuity.
           </p>
         </div>
+        <Button className="mt-10 text-xl">Start now</Button>
       </div>
     </div>
   );
