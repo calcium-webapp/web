@@ -1,6 +1,6 @@
 import Navbar from "@/components/Home/navbar";
 import Header from "@/components/Home/header";
-import "@/styles/home-bg.css";
+import "@/styles/custom-bg.css";
 import { Heart } from "lucide-react";
 
 export default function Home() {

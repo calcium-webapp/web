@@ -2,6 +2,7 @@ import "@/styles/header-text.css";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Squiggle from "../../../public/squiggle.svg";
+import Link from "next/link";
 
 export default function Header() {
   return (
@@ -48,7 +49,9 @@ export default function Header() {
             ingenuity.
           </p>
         </div>
-        <Button className="mt-10 text-xl">Start now</Button>
+        <Link href="/register">
+          <Button className="mt-10 text-xl">Start now</Button>
+        </Link>
       </div>
     </div>
   );
