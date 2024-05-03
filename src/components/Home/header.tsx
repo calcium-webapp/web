@@ -5,7 +5,7 @@ import Squiggle from "../../../public/squiggle.svg";
 
 export default function Header() {
   return (
-    <div className="flex justify-center items-center w-full mt-60">
+    <div className="flex justify-center items-center w-full mt-52">
       <div className="text-center">
         <div className="main-text text-8xl">
           <p>
