@@ -51,3 +51,39 @@
     border-color: white;
   }
 }
+
+/* Squiggle */
+.squiggle {
+  stroke-dasharray: 450;
+  stroke-dashoffset: 450;
+  animation: draw 2s linear forwards, color-cycle 5s steps(1) infinite;
+  animation-delay: 2s;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes color-cycle {
+    0% {
+      stroke: #bc85ff;
+    }
+    20% {
+      stroke: #e11d48;
+    }
+    40% {
+      stroke: #3b82f6;
+    }
+    60% {
+      stroke: #22c55e;
+    }
+    80% {
+      stroke: #ea580c;
+    }
+    100% {
+      stroke: #bc85ff; /* Back to the initial color to create a loop */
+    }
+  }
+  
