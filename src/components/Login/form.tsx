@@ -23,7 +23,7 @@ import { Button } from "@/components/ui/button";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import { motion } from "framer-motion";
 
-export function RegisterForm() {
+export function LoginForm() {
   return (
     <div className="grid h-screen place-items-center">
       <motion.div
@@ -44,10 +44,7 @@ export function RegisterForm() {
       >
         <Card className="w-[500px]">
           <CardHeader>
-            <CardTitle>Create an account</CardTitle>
-            <CardDescription>
-              Select an option below to create your account
-            </CardDescription>
+            <CardTitle>Access to your account</CardTitle>
           </CardHeader>
           <CardContent>
             <form>
@@ -74,15 +71,7 @@ export function RegisterForm() {
                 {/* end outline */}
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="name">Username</Label>
-                  <Input id="name" placeholder="" />
-                </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    placeholder="user@calcium.dev"
-                    type="email"
-                  />
+                  <Input id="name" />
                 </div>
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="password">Password</Label>
@@ -92,7 +81,7 @@ export function RegisterForm() {
             </form>
           </CardContent>
           <CardFooter className="">
-            <Button className="w-full">Register</Button>
+            <Button className="w-full">Login</Button>
           </CardFooter>
         </Card>
       </motion.div>
