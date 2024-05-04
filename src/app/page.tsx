@@ -5,7 +5,7 @@ import { Heart } from "lucide-react";
 
 export default function Home() {
   return (
-    <>
+    <main>
       {/* Background */}
       <div className="home-bg-light block dark:hidden"></div>
       <div className="home-bg-dark hidden dark:block"></div>
@@ -33,6 +33,6 @@ export default function Home() {
           </a>
         </p>
       </div>
-    </>
+    </main>
   );
 }
