@@ -31,8 +31,8 @@ export function LoggedAvatar({ img_src, initials }: LoggedAvatarProps) {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuItem>
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
+          <LogOut className="mr-2 h-4 w-4 text-red-500" />
+          <span className="text-red-500 font-semibold">Log out</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
