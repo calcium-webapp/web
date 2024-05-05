@@ -1,11 +1,12 @@
-import { Button } from "@/components/ui/button";
-import { Github, LogIn, Pencil } from "lucide-react";
+import { Search } from "lucide-react";
 import Image from "next/image";
 import { ModeToggle } from "@/components/ownui/theme-toggle";
 import { Badge } from "@/components/ui/badge";
 import Logo from "../../../public/logo.png";
 import LogoDark from "../../../public/logo-dark.png";
 import Link from "next/link";
+import { Input } from "@/components/ui/input";
+import { LoggedAvatar } from "@/components/ownui/avatar";
 
 export default function Navbar() {
   return (
@@ -25,22 +26,12 @@ export default function Navbar() {
           </Link>
           <Badge>beta</Badge>
         </div>
+        <div className="flex items-center py-4">
+          <Search className="relative left-8 top-3 transform -translate-y-1/2 text-gray-500" />
+          <Input placeholder={"Search..."} className="pl-10 w-[500px]" />
+        </div>
         <div className="flex items-center gap-2">
-          <Link href="/register">
-            <Button>
-              <Pencil className="mr-2 h-4 w-4" /> Register
-            </Button>
-          </Link>
-          <Link href="/login">
-            <Button>
-              <LogIn className="mr-2 h-4 w-4" /> Login
-            </Button>
-          </Link>
-          <div className="px-3">
-            <a href="https://github.com/davnpsh/calcium-frontend">
-              <Github />
-            </a>
-          </div>
+          <LoggedAvatar img_src="" initials="As" />
           <ModeToggle />
         </div>
       </div>
