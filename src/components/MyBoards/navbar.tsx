@@ -10,7 +10,7 @@ import { LoggedAvatar } from "@/components/ownui/avatar";
 
 export default function Navbar() {
   return (
-    <nav className="h-14 w-full px-8 border-b border-gray-200 dark:border-white dark:border-opacity-10 absolute">
+    <nav className="h-14 w-full px-8 border-b border-gray-200 dark:border-white dark:border-opacity-10">
       <div className="mx-auto max-w-screen-xl flex items-center h-full justify-between">
         <div className="flex items-center gap-2">
           <Link href="/">

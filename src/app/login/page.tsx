@@ -4,13 +4,15 @@ import { LoginForm } from "@/components/Login/form";
 
 export default function Login() {
   return (
-    <main>
-      {/* Background */}
-      <div className="home-bg-light block dark:hidden"></div>
-      <div className="home-bg-dark hidden dark:block"></div>
-
+    <>
       <Navbar />
-      <LoginForm/>
-    </main>
+      <main>
+        {/* Background */}
+        <div className="home-bg-light block dark:hidden"></div>
+        <div className="home-bg-dark hidden dark:block"></div>
+
+        <LoginForm />
+      </main>
+    </>
   );
 }
