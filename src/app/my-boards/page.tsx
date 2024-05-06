@@ -5,6 +5,13 @@ import { Board } from "@/components/MyBoards/board";
 import { NewBoard } from "@/components/MyBoards/new-board";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
+// For mocking names
+import {
+  uniqueNamesGenerator,
+  adjectives,
+  animals,
+} from "unique-names-generator";
+
 export const metadata: Metadata = {
   title: "My boards - Calcium",
   description: "Create or start your boards",
@@ -22,7 +29,14 @@ export default function Boards() {
           <ScrollArea>
             <div className="boards w-full py-5 px-5 grid grid-cols-3 gap-2">
               {Array.from({ length: 17 }).map((_, index) => (
-                <Board key={index} name="intelligent-panda" />
+                <Board
+                  key={index}
+                  name={uniqueNamesGenerator({
+                    dictionaries: [adjectives, animals],
+                    separator: "-",
+                    length: 2,
+                  })}
+                />
               ))}
               <NewBoard />
             </div>
