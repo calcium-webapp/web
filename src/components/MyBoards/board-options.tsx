@@ -21,7 +21,11 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 
-function RenameDialogContent() {
+interface RenameDialogContentProps {
+  name: string;
+}
+
+function RenameDialogContent({ name }: RenameDialogContentProps) {
   return (
     <>
       <DialogHeader>
@@ -33,7 +37,7 @@ function RenameDialogContent() {
           Rename this board. Click save when you&apos;re done.
         </DialogDescription>
       </DialogHeader>
-      <Input placeholder="beautiful-tiger"></Input>
+      <Input value={name}></Input>
       <DialogFooter>
         <DialogClose asChild>
           <Button variant="outline">Cancel</Button>
@@ -66,7 +70,11 @@ function DeleteDialogContent() {
   );
 }
 
-export function BoardOptions() {
+interface BoardOptionsProps {
+  name: string;
+}
+
+export function BoardOptions({ name }: BoardOptionsProps) {
   const [dialogOption, setDialogOption] = useState<string | null>(null);
 
   const handleClick = (item: string) => {
@@ -97,7 +105,7 @@ export function BoardOptions() {
         </DropdownMenuContent>
       </DropdownMenu>
       <DialogContent>
-        {dialogOption === "Rename" && <RenameDialogContent />}
+        {dialogOption === "Rename" && <RenameDialogContent name={name} />}
         {dialogOption === "Delete" && <DeleteDialogContent />}
       </DialogContent>
     </Dialog>
