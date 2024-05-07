@@ -38,11 +38,11 @@ export default function Boards() {
                   })}
                 />
               ))}
-              <NewBoard />
             </div>
             <ScrollBar orientation="vertical" />
           </ScrollArea>
         </div>
+        <NewBoard />
       </main>
     </div>
   );
