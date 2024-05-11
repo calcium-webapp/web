@@ -8,6 +8,7 @@ import { NewBoard } from "@/components/MyBoards/new-board";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useEffect, useState } from "react";
 import { Spinner } from "@/components/ownui/spinner";
+import { SearchX, Frown } from "lucide-react";
 
 // (Temporal, for testing)
 import {
@@ -55,7 +56,7 @@ export default function Boards() {
   }, []);
 
   const fetchBoards = () => {
-    const fetchedBoards = generateBoards(17);
+    const fetchedBoards = generateBoards(10);
     setBoards(fetchedBoards);
     setLoading(false);
   };
@@ -96,6 +97,24 @@ export default function Boards() {
                     <Board key={index} name={board.name} id={board.id} />
                   ))
               )}
+              {!loading &&
+                boards.filter((board) =>
+                  board.name.toLowerCase().includes(searchTerm.toLowerCase())
+                ).length === 0 && (
+                  <div className="col-span-3 flex justify-center text-gray-500">
+                    {boards.length === 0 ? (
+                      <>
+                        <span>No boards available</span>
+                        <Frown className="ml-2 h-6 w-6 inline-block" />
+                      </>
+                    ) : (
+                      <>
+                        <span>No boards found</span>
+                        <SearchX className="ml-2 h-6 w-6 inline-block" />
+                      </>
+                    )}
+                  </div>
+                )}
             </div>
             <ScrollBar orientation="vertical" />
           </ScrollArea>
