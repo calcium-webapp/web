@@ -27,8 +27,20 @@ export function Board({ name, id }: BoardProps) {
   return (
     <motion.div
       className={`board rounded-lg hover:z-20 ${shadow}`}
+      initial={{ opacity: 0, scale: 1.05 }}
+      animate={{ opacity: 1, scale: 1 }}
       whileHover={{ scale: scale }}
-      transition={{ type: "spring", stiffness: 400, damping: 10 }}
+      transition={{
+        duration: 0.8,
+        delay: 0,
+        ease: [0, 0.71, 0.2, 1.01],
+        scale: {
+          type: "spring",
+          damping: 10,
+          stiffness: 200,
+          restDelta: 0.001,
+        },
+      }}
     >
       <AspectRatio ratio={16 / 9}>
         <motion.div

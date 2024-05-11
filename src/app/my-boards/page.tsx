@@ -42,14 +42,25 @@ interface Board {
 export default function Boards() {
   const [boards, setBoards] = useState<Board[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [currentBoardIndex, setCurrentBoardIndex] = useState<number>(0);
 
   // Simulated fetch
   useEffect(() => {
     fetchBoards();
   }, []);
 
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      if (currentBoardIndex < boards.length - 1) {
+        setCurrentBoardIndex(currentBoardIndex + 1);
+      }
+    }, 100);
+
+    return () => clearTimeout(delay);
+  }, [currentBoardIndex, boards]);
+
   const fetchBoards = () => {
-    const fetchedBoards = generateBoards(7);
+    const fetchedBoards = generateBoards(17);
     setBoards(fetchedBoards);
     setLoading(false);
   };
@@ -66,12 +77,14 @@ export default function Boards() {
             <div className="boards w-full py-5 px-5 grid grid-cols-3 gap-2">
               {loading ? (
                 <div className="col-span-3 flex justify-center">
-                  <Spinner className="w-12 h-12"/>
+                  <Spinner className="w-12 h-12" />
                 </div>
               ) : (
-                boards.map((board, index) => (
-                  <Board key={index} name={board.name} id={board.id} />
-                ))
+                boards
+                  .slice(0, currentBoardIndex + 1)
+                  .map((board, index) => (
+                    <Board key={index} name={board.name} id={board.id} />
+                  ))
               )}
             </div>
             <ScrollBar orientation="vertical" />
