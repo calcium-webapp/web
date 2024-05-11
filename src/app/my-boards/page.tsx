@@ -1,23 +1,59 @@
+"use client";
+
 import Navbar from "@/components/MyBoards/navbar";
 import { TypographyH3 } from "@/components/ownui/typography";
 import type { Metadata } from "next";
 import { Board } from "@/components/MyBoards/board";
 import { NewBoard } from "@/components/MyBoards/new-board";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useEffect, useState } from "react";
 
-// For mocking names
+// (Temporal, for testing)
 import {
   uniqueNamesGenerator,
   adjectives,
   animals,
 } from "unique-names-generator";
+import { cn } from "@/lib/utils";
+import { Spinner } from "@/components/ownui/spinner";
 
-export const metadata: Metadata = {
-  title: "My boards - Calcium",
-  description: "Create or start your boards",
-};
+function generateBoards(n: number) {
+  var boards = [];
+  for (var i = 0; i < n; i++) {
+    boards.push({
+      name: uniqueNamesGenerator({
+        dictionaries: [adjectives, animals],
+        separator: "-",
+        length: 2,
+      }),
+      id: "",
+    });
+  }
+
+  return boards;
+}
+// (end temporal)
+
+interface Board {
+  name: string;
+  id: string;
+}
 
 export default function Boards() {
+  const [boards, setBoards] = useState<Board[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  // Simulated fetch
+  useEffect(() => {
+    fetchBoards();
+  }, []);
+
+  const fetchBoards = () => {
+    const fetchedBoards = generateBoards(7);
+    setBoards(fetchedBoards);
+    setLoading(false);
+  };
+
   return (
     <div className="flex flex-col h-screen">
       <Navbar />
@@ -28,16 +64,15 @@ export default function Boards() {
           </TypographyH3>
           <ScrollArea>
             <div className="boards w-full py-5 px-5 grid grid-cols-3 gap-2">
-              {Array.from({ length: 17 }).map((_, index) => (
-                <Board
-                  key={index}
-                  name={uniqueNamesGenerator({
-                    dictionaries: [adjectives, animals],
-                    separator: "-",
-                    length: 2,
-                  })}
-                />
-              ))}
+              {loading ? (
+                <div className="col-span-3 flex justify-center">
+                  <Spinner className="w-12 h-12"/>
+                </div>
+              ) : (
+                boards.map((board, index) => (
+                  <Board key={index} name={board.name} id={board.id} />
+                ))
+              )}
             </div>
             <ScrollBar orientation="vertical" />
           </ScrollArea>

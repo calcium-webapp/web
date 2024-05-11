@@ -10,11 +10,12 @@ import { set } from "react-hook-form";
 
 interface BoardProps {
   name: string;
+  id: string;
 }
 
 const backgrounds: string[] = ["a", "b", "c", "d", "e", "f"];
 
-export function Board({ name }: BoardProps) {
+export function Board({ name, id }: BoardProps) {
   var randomIndex: number = useMemo(
     () => Math.floor(Math.random() * backgrounds.length),
     []
