@@ -7,6 +7,7 @@ import { Board } from "@/components/MyBoards/board";
 import { NewBoard } from "@/components/MyBoards/new-board";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useEffect, useState } from "react";
+import { Spinner } from "@/components/ownui/spinner";
 
 // (Temporal, for testing)
 import {
@@ -14,8 +15,6 @@ import {
   adjectives,
   animals,
 } from "unique-names-generator";
-import { cn } from "@/lib/utils";
-import { Spinner } from "@/components/ownui/spinner";
 
 function generateBoards(n: number) {
   var boards = [];
@@ -43,12 +42,26 @@ export default function Boards() {
   const [boards, setBoards] = useState<Board[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentBoardIndex, setCurrentBoardIndex] = useState<number>(0);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
-  // Simulated fetch
+  // Handle search on input
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  /* SIMULATED FETCH */
   useEffect(() => {
     fetchBoards();
   }, []);
 
+  const fetchBoards = () => {
+    const fetchedBoards = generateBoards(17);
+    setBoards(fetchedBoards);
+    setLoading(false);
+  };
+  /* END SIMULATED FETCH */
+
+  // Delay boards a certain time between them
   useEffect(() => {
     const delay = setTimeout(() => {
       if (currentBoardIndex < boards.length - 1) {
@@ -59,15 +72,9 @@ export default function Boards() {
     return () => clearTimeout(delay);
   }, [currentBoardIndex, boards]);
 
-  const fetchBoards = () => {
-    const fetchedBoards = generateBoards(17);
-    setBoards(fetchedBoards);
-    setLoading(false);
-  };
-
   return (
     <div className="flex flex-col h-screen">
-      <Navbar />
+      <Navbar onSearch={handleSearch} />
       <main className="flex-1 px-8 overflow-y-hidden">
         <div className="main_content pt-5 mx-auto max-w-screen-xl flex flex-col h-full">
           <TypographyH3 className="pb-2 shadow-[#fff_-5px_10px_11px_5px] dark:shadow-[#09090b_-5px_10px_11px_5px] z-30">
@@ -81,6 +88,9 @@ export default function Boards() {
                 </div>
               ) : (
                 boards
+                  .filter((board) =>
+                    board.name.toLowerCase().includes(searchTerm.toLowerCase())
+                  )
                   .slice(0, currentBoardIndex + 1)
                   .map((board, index) => (
                     <Board key={index} name={board.name} id={board.id} />
