@@ -65,7 +65,10 @@ export function RegisterForm() {
                   >
                     <FaGoogle className="mr-2 h-4 w-4" /> Google
                   </Button>
-                  <Button variant="outline">
+                  <Button
+                    variant="outline"
+                    onClick={(e) => handleSignIn(e, "github")}
+                  >
                     <FaGithub className="mr-2 h-4 w-4" /> Github
                   </Button>
                 </div>
