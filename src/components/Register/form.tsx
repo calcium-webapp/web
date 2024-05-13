@@ -22,8 +22,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { signIn } from "next-auth/react";
 
 export function RegisterForm() {
+  const handleSignIn = (e: React.MouseEvent, provider: string) => {
+    e.preventDefault();
+    signIn("google");
+  };
+
   return (
     <div className="grid h-screen place-items-center">
       <motion.div
@@ -53,7 +59,10 @@ export function RegisterForm() {
             <form>
               <div className="grid w-full items-center gap-4">
                 <div className="providers grid grid-cols-2 gap-6">
-                  <Button variant="outline">
+                  <Button
+                    variant="outline"
+                    onClick={(e) => handleSignIn(e, "google")}
+                  >
                     <FaGoogle className="mr-2 h-4 w-4" /> Google
                   </Button>
                   <Button variant="outline">
