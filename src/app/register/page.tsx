@@ -1,14 +1,18 @@
+"use client";
+
 import Navbar from "@/components/Home/navbar";
 import "@/styles/custom-bg.css";
 import { RegisterForm } from "@/components/Register/form";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Register - Calcium",
-  description: "Create an account",
-};
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 export default function Register() {
+  const { data: session } = useSession();
+
+  if (session) {
+    redirect("/my-boards");
+  }
+
   return (
     <>
       <Navbar />

@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { Spinner } from "@/components/ownui/spinner";
 import { SearchX, Frown } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 // (Temporal, for testing)
 import {
@@ -40,6 +41,12 @@ interface Board {
 }
 
 export default function Boards() {
+  const { data: session } = useSession();
+
+  if (!session) {
+    redirect("/login");
+  }
+
   const [boards, setBoards] = useState<Board[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentBoardIndex, setCurrentBoardIndex] = useState<number>(0);
