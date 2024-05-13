@@ -27,7 +27,7 @@ import { signIn } from "next-auth/react";
 export function RegisterForm() {
   const handleSignIn = (e: React.MouseEvent, provider: string) => {
     e.preventDefault();
-    signIn("google");
+    signIn(provider);
   };
 
   return (
