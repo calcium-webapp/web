@@ -2,13 +2,13 @@
 
 import Navbar from "@/components/MyBoards/navbar";
 import { TypographyH3 } from "@/components/ownui/typography";
-import type { Metadata } from "next";
 import { Board } from "@/components/MyBoards/board";
 import { NewBoard } from "@/components/MyBoards/new-board";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useEffect, useState } from "react";
 import { Spinner } from "@/components/ownui/spinner";
 import { SearchX, Frown } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 // (Temporal, for testing)
 import {

@@ -35,7 +35,7 @@ export default function Navbar({ onSearch }: NavbarProps) {
           <Input placeholder={"Search..."} className="pl-10 w-[500px]" onChange={onSearch} />
         </div>
         <div className="flex items-center gap-2">
-          <LoggedAvatar img_src="" initials="As" />
+          <LoggedAvatar />
           <ModeToggle />
         </div>
       </div>

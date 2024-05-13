@@ -6,23 +6,31 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogOut } from "lucide-react";
+import { useSession, signOut } from "next-auth/react";
 
-interface LoggedAvatarProps {
-  img_src: string;
-  initials: string;
-}
+export function LoggedAvatar() {
+  const { data: session } = useSession();
 
-export function LoggedAvatar({ img_src, initials }: LoggedAvatarProps) {
+  if (!session) {
+    return <></>;
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="cursor-pointer">
-          <AvatarImage src={img_src} alt="" />
-          <AvatarFallback>{initials}</AvatarFallback>
+          <AvatarImage src={session?.user?.image as string} alt="" />
+          <AvatarFallback>
+            {(session?.user?.name as string).substring(0, 2)}
+          </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => {
+            signOut();
+          }}
+        >
           <LogOut className="mr-2 h-4 w-4 text-red-500" />
           <span className="text-red-500 font-semibold">Log out</span>
         </DropdownMenuItem>
