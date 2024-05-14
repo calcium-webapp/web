@@ -58,7 +58,7 @@ export function RegisterForm() {
   // Credentials submit handler
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await fetch("/api/register", {
+      const response = await fetch("/api/auth/register", {
         method: "POST",
         body: JSON.stringify(values),
         headers: {
@@ -70,6 +70,7 @@ export function RegisterForm() {
         toast({
           title: "Register successful.",
           description: "Proceding to login page...",
+          duration: 3000
         });
         setTimeout(() => {
           router.push("/login");
