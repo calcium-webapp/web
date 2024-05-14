@@ -22,12 +22,15 @@ import { FaGoogle, FaGithub } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { signIn } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
+import { Loader2 } from "lucide-react";
 
 // Following form guide: https://ui.shadcn.com/docs/components/form
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
+
+import { useState } from "react";
 
 const formSchema = z.object({
   username: z
@@ -45,6 +48,12 @@ export function RegisterForm() {
   const router = useRouter();
   const { toast } = useToast();
 
+  // Control buttons
+  const [btnsDisabled, setBtnsDisabled] = useState<boolean>(false);
+  const [googleBtnDisabled, setGoogleBtnDisabled] = useState<boolean>(false);
+  const [githubBtnDisabled, setGithubBtnDisabled] = useState<boolean>(false);
+  const [credBtnDisabled, setCredBtnDisabled] = useState<boolean>(false);
+
   // Form definition
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -55,8 +64,18 @@ export function RegisterForm() {
     },
   });
 
+  // Prevent submit on Enter
+  function handleEnter(e: React.KeyboardEvent) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
+  }
+
   // Credentials submit handler
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setBtnsDisabled(true);
+    setCredBtnDisabled(true);
+
     try {
       const response = await fetch("/api/auth/register", {
         method: "POST",
@@ -70,12 +89,14 @@ export function RegisterForm() {
         toast({
           title: "Register successful.",
           description: "Proceding to login page...",
-          duration: 3000
+          duration: 3000,
         });
         setTimeout(() => {
           router.push("/login");
         }, 3000);
       } else {
+        setCredBtnDisabled(false);
+
         toast({
           variant: "destructive",
           title: "Uh oh! Something went wrong.",
@@ -91,6 +112,12 @@ export function RegisterForm() {
   const handleSSOSignIn = (e: React.MouseEvent, provider: string) => {
     e.preventDefault();
     signIn(provider);
+
+    setBtnsDisabled(true);
+
+    provider === "google"
+      ? setGoogleBtnDisabled(true)
+      : setGithubBtnDisabled(true);
   };
 
   return (
@@ -122,18 +149,44 @@ export function RegisterForm() {
             <CardContent>
               <div className="grid w-full items-center gap-4">
                 <div className="providers grid grid-cols-2 gap-6">
-                  <Button
-                    variant="outline"
-                    onClick={(e) => handleSSOSignIn(e, "google")}
-                  >
-                    <FaGoogle className="mr-2 h-4 w-4" /> Google
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={(e) => handleSSOSignIn(e, "github")}
-                  >
-                    <FaGithub className="mr-2 h-4 w-4" /> Github
-                  </Button>
+                  {btnsDisabled ? (
+                    googleBtnDisabled ? (
+                      <Button variant="outline" disabled>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Google
+                      </Button>
+                    ) : (
+                      <Button variant="outline" disabled>
+                        <FaGoogle className="mr-2 h-4 w-4" /> Google
+                      </Button>
+                    )
+                  ) : (
+                    <Button
+                      variant="outline"
+                      onClick={(e) => handleSSOSignIn(e, "google")}
+                    >
+                      <FaGoogle className="mr-2 h-4 w-4" /> Google
+                    </Button>
+                  )}
+                  {btnsDisabled ? (
+                    githubBtnDisabled ? (
+                      <Button variant="outline" disabled>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Github
+                      </Button>
+                    ) : (
+                      <Button variant="outline" disabled>
+                        <FaGithub className="mr-2 h-4 w-4" /> Github
+                      </Button>
+                    )
+                  ) : (
+                    <Button
+                      variant="outline"
+                      onClick={(e) => handleSSOSignIn(e, "github")}
+                    >
+                      <FaGithub className="mr-2 h-4 w-4" /> Github
+                    </Button>
+                  )}
                 </div>
                 {/* outline */}
                 <div className="relative">
@@ -149,6 +202,7 @@ export function RegisterForm() {
                 {/* end outline */}
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}
+                  onKeyDown={handleEnter}
                   className="space-y-4"
                 >
                   <FormField
@@ -190,9 +244,22 @@ export function RegisterForm() {
                       </FormItem>
                     )}
                   />
-                  <Button className="w-full" type="submit">
-                    Register
-                  </Button>
+                  {btnsDisabled ? (
+                    credBtnDisabled ? (
+                      <Button className="w-full" disabled>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Register
+                      </Button>
+                    ) : (
+                      <Button className="w-full" disabled>
+                        Register
+                      </Button>
+                    )
+                  ) : (
+                    <Button className="w-full" type="submit">
+                      Register
+                    </Button>
+                  )}
                 </form>
               </div>
             </CardContent>
