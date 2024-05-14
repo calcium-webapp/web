@@ -37,16 +37,17 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      // In case of SSO sign-in, register user to database
-      
+    async jwt({ token, user }) {
+      // Return ID as primary key
+      if (user?.id) {
+        token.id = user.id;
+      }
 
-      return true
+      return token;
     },
-    async session({ session }) {
-      // In case of SSO sign-in, add ID field
-      session.user.id = "s";
-
+    async session({ session, token }) {
+      // Return ID to client session
+      session.user.id = token.id as string;
       return session;
     },
   },
