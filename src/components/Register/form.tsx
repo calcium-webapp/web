@@ -29,7 +29,7 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 
 import { useState } from "react";
-import { useSession, getSession, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 const formSchema = z.object({
   username: z
@@ -46,7 +46,6 @@ const formSchema = z.object({
 export function RegisterForm() {
   const router = useRouter();
   const { toast } = useToast();
-  const { data: session } = useSession();
 
   // Control buttons
   const [btnsDisabled, setBtnsDisabled] = useState<boolean>(false);
@@ -115,7 +114,7 @@ export function RegisterForm() {
   }
 
   // Sign in with SSO options (google, github)
-  const handleSSOSignIn = (e: React.MouseEvent, provider: string) => {
+  const handleSSOSignIn = async (e: React.MouseEvent, provider: string) => {
     e.preventDefault();
 
     // Deactivate buttons
@@ -125,7 +124,21 @@ export function RegisterForm() {
       : setGithubBtnDisabled(true);
 
     try {
-      signIn(provider);
+      const response = await signIn(provider);
+
+      if (response?.error) {
+        // Reactive buttons
+        setBtnsDisabled(false);
+        provider === "google"
+          ? setGoogleBtnDisabled(true)
+          : setGithubBtnDisabled(true);
+
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with your request.",
+        });
+      }
     } catch (error) {
       console.error("An error occurred:", error);
       // Reactive buttons
@@ -161,61 +174,62 @@ export function RegisterForm() {
               Select an option below to create your account
             </CardDescription>
           </CardHeader>
-          <Form {...form}>
-            <CardContent>
-              <div className="grid w-full items-center gap-4">
-                <div className="providers grid grid-cols-2 gap-6">
-                  {btnsDisabled ? (
-                    googleBtnDisabled ? (
-                      <Button variant="outline" disabled>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Google
-                      </Button>
-                    ) : (
-                      <Button variant="outline" disabled>
-                        <FaGoogle className="mr-2 h-4 w-4" /> Google
-                      </Button>
-                    )
+
+          <CardContent>
+            <div className="grid w-full items-center gap-4">
+              <div className="providers grid grid-cols-2 gap-6">
+                {btnsDisabled ? (
+                  googleBtnDisabled ? (
+                    <Button variant="outline" disabled>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Google
+                    </Button>
                   ) : (
-                    <Button
-                      variant="outline"
-                      onClick={(e) => handleSSOSignIn(e, "google")}
-                    >
+                    <Button variant="outline" disabled>
                       <FaGoogle className="mr-2 h-4 w-4" /> Google
                     </Button>
-                  )}
-                  {btnsDisabled ? (
-                    githubBtnDisabled ? (
-                      <Button variant="outline" disabled>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Github
-                      </Button>
-                    ) : (
-                      <Button variant="outline" disabled>
-                        <FaGithub className="mr-2 h-4 w-4" /> Github
-                      </Button>
-                    )
+                  )
+                ) : (
+                  <Button
+                    variant="outline"
+                    onClick={(e) => handleSSOSignIn(e, "google")}
+                  >
+                    <FaGoogle className="mr-2 h-4 w-4" /> Google
+                  </Button>
+                )}
+                {btnsDisabled ? (
+                  githubBtnDisabled ? (
+                    <Button variant="outline" disabled>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Github
+                    </Button>
                   ) : (
-                    <Button
-                      variant="outline"
-                      onClick={(e) => handleSSOSignIn(e, "github")}
-                    >
+                    <Button variant="outline" disabled>
                       <FaGithub className="mr-2 h-4 w-4" /> Github
                     </Button>
-                  )}
+                  )
+                ) : (
+                  <Button
+                    variant="outline"
+                    onClick={(e) => handleSSOSignIn(e, "github")}
+                  >
+                    <FaGithub className="mr-2 h-4 w-4" /> Github
+                  </Button>
+                )}
+              </div>
+              {/* outline */}
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t"></span>
                 </div>
-                {/* outline */}
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t"></span>
-                  </div>
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background px-2 text-muted-foreground">
-                      Or continue with
-                    </span>
-                  </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground">
+                    Or continue with
+                  </span>
                 </div>
-                {/* end outline */}
+              </div>
+              {/* end outline */}
+              <Form {...form}>
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}
                   onKeyDown={handleEnter}
@@ -277,9 +291,9 @@ export function RegisterForm() {
                     </Button>
                   )}
                 </form>
-              </div>
-            </CardContent>
-          </Form>
+              </Form>
+            </div>
+          </CardContent>
         </Card>
       </motion.div>
     </div>

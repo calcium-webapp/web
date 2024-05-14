@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 const USERS_DB_URL = process.env.USERS_DB_URL;
-const SIGNUP_ENDPOINT = `http://${USERS_DB_URL}/signup`;
+const SIGNUP_ENDPOINT = `${USERS_DB_URL}/signup`;
 
 export async function POST(request: Request) {
   try {

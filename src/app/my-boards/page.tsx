@@ -42,7 +42,6 @@ interface Board {
 
 export default function Boards() {
   const { data: session } = useSession();
-  console.log(session);
 
   if (!session) {
     redirect("/login");

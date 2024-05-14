@@ -14,15 +14,14 @@ const handler = NextAuth({
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     }),
     CredentialsProvider({
-      id: "domain-auth" as string,
-      name: "domain-credentials" as string,
+      name: "credentials",
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "jsmith" },
+        username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        // Add logic here to look up the user from the credentials supplied
-        const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
+        // Dummy
+        const user = { id: "1", name: "J Smith", email: "jsmith@example.com", image: "" };
 
         if (user) {
           // Any object returned will be saved in `user` property of the JWT
@@ -30,13 +29,18 @@ const handler = NextAuth({
         } else {
           // If you return null then an error will be displayed advising the user to check their details.
           return null;
-
-          // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
         }
       },
     }),
   ],
   callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      // Add register of user in database in case of SSO sign-in
+      if (account?.provider === "google" || account?.provider === "github") {
+      }
+
+      return true;
+    },
     async jwt({ token, user }) {
       // Return ID as primary key
       if (user?.id) {
