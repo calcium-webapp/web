@@ -21,11 +21,13 @@ import { Button } from "@/components/ui/button";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { signIn } from "next-auth/react";
+import { useToast } from "@/components/ui/use-toast";
 
 // Following form guide: https://ui.shadcn.com/docs/components/form
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   username: z
@@ -40,6 +42,9 @@ const formSchema = z.object({
 });
 
 export function RegisterForm() {
+  const router = useRouter();
+  const { toast } = useToast();
+
   // Form definition
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,8 +56,34 @@ export function RegisterForm() {
   });
 
   // Credentials submit handler
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        body: JSON.stringify(values),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Register successful.",
+          description: "Proceding to login page...",
+        });
+        setTimeout(() => {
+          router.push("/login");
+        }, 3000);
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with your request.",
+        });
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
   }
 
   // Sign in with SSO options (google, github)
