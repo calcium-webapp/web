@@ -3,7 +3,6 @@
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -13,7 +12,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -24,8 +22,41 @@ import { FaGoogle, FaGithub } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { signIn } from "next-auth/react";
 
+// Following form guide: https://ui.shadcn.com/docs/components/form
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+const formSchema = z.object({
+  username: z
+    .string()
+    .min(2, { message: "Username must be at least 2 characters." })
+    .max(20, { message: "Username must be at most 20 characters." }),
+  email: z.string().email({ message: "Invalid email address." }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters." })
+    .max(12, { message: "Password must be at most 12 characters." }),
+});
+
 export function RegisterForm() {
-  const handleSignIn = (e: React.MouseEvent, provider: string) => {
+  // Form definition
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+    },
+  });
+
+  // Credentials submit handler
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values);
+  }
+
+  // Sign in with SSO options (google, github)
+  const handleSSOSignIn = (e: React.MouseEvent, provider: string) => {
     e.preventDefault();
     signIn(provider);
   };
@@ -55,19 +86,19 @@ export function RegisterForm() {
               Select an option below to create your account
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <form>
+          <Form {...form}>
+            <CardContent>
               <div className="grid w-full items-center gap-4">
                 <div className="providers grid grid-cols-2 gap-6">
                   <Button
                     variant="outline"
-                    onClick={(e) => handleSignIn(e, "google")}
+                    onClick={(e) => handleSSOSignIn(e, "google")}
                   >
                     <FaGoogle className="mr-2 h-4 w-4" /> Google
                   </Button>
                   <Button
                     variant="outline"
-                    onClick={(e) => handleSignIn(e, "github")}
+                    onClick={(e) => handleSSOSignIn(e, "github")}
                   >
                     <FaGithub className="mr-2 h-4 w-4" /> Github
                   </Button>
@@ -84,28 +115,56 @@ export function RegisterForm() {
                   </div>
                 </div>
                 {/* end outline */}
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="name">Username</Label>
-                  <Input id="name" placeholder="" />
-                </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    placeholder="user@calcium.dev"
-                    type="email"
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-4"
+                >
+                  <FormField
+                    control={form.control}
+                    name="username"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Username</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="password">Password</Label>
-                  <Input id="password" type="password" />
-                </div>
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Password</FormLabel>
+                        <FormControl>
+                          <Input {...field} type="password" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button className="w-full" type="submit">
+                    Register
+                  </Button>
+                </form>
               </div>
-            </form>
-          </CardContent>
-          <CardFooter className="">
-            <Button className="w-full">Register</Button>
-          </CardFooter>
+            </CardContent>
+          </Form>
         </Card>
       </motion.div>
     </div>
