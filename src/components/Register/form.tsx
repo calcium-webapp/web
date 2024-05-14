@@ -72,6 +72,7 @@ export function RegisterForm() {
 
   // Credentials submit handler
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    // Deactivate buttons
     setBtnsDisabled(true);
     setCredBtnDisabled(true);
 
@@ -94,6 +95,8 @@ export function RegisterForm() {
           router.push("/login");
         }, 3000);
       } else {
+        // Reactive buttons
+        setBtnsDisabled(false);
         setCredBtnDisabled(false);
 
         toast({
@@ -104,19 +107,32 @@ export function RegisterForm() {
       }
     } catch (error) {
       console.error("An error occurred:", error);
+      // Reactive buttons
+      setBtnsDisabled(false);
+      setCredBtnDisabled(false);
     }
   }
 
   // Sign in with SSO options (google, github)
   const handleSSOSignIn = (e: React.MouseEvent, provider: string) => {
     e.preventDefault();
-    signIn(provider);
 
+    // Deactivate buttons
     setBtnsDisabled(true);
-
     provider === "google"
       ? setGoogleBtnDisabled(true)
       : setGithubBtnDisabled(true);
+
+    try {
+      signIn(provider);
+    } catch (error) {
+      console.error("An error occurred:", error);
+      // Reactive buttons
+      setBtnsDisabled(false);
+      provider === "google"
+        ? setGoogleBtnDisabled(false)
+        : setGithubBtnDisabled(false);
+    }
   };
 
   return (
