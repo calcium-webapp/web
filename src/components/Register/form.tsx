@@ -19,7 +19,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { signIn } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
 
@@ -30,6 +29,7 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 
 import { useState } from "react";
+import { useSession, getSession, signIn } from "next-auth/react";
 
 const formSchema = z.object({
   username: z
@@ -46,6 +46,7 @@ const formSchema = z.object({
 export function RegisterForm() {
   const router = useRouter();
   const { toast } = useToast();
+  const { data: session } = useSession();
 
   // Control buttons
   const [btnsDisabled, setBtnsDisabled] = useState<boolean>(false);

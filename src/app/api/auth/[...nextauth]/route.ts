@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { Session } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -36,6 +36,20 @@ const handler = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      // In case of SSO sign-in, register user to database
+      
+
+      return true
+    },
+    async session({ session }) {
+      // In case of SSO sign-in, add ID field
+      session.user.id = "s";
+
+      return session;
+    },
+  },
 });
 
 export { handler as GET, handler as POST };
