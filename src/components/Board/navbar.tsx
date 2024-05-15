@@ -2,8 +2,8 @@ import Logo from "../../../public/logo.png";
 import LogoDark from "../../../public/logo-dark.png";
 import Link from "next/link";
 import Image from "next/image";
-import { DownloadButton } from "./download-button";
-import { RunButton } from "./run-button";
+import { ShareButton } from "./share-button";
+import { ModeToggle } from "../ownui/theme-toggle";
 
 export function Navbar() {
   return (
@@ -21,8 +21,8 @@ export function Navbar() {
           <span>amazing-spider</span>
         </div>
         <div className="flex items-center gap-2">
-          <DownloadButton />
-          <RunButton />
+          <ShareButton />
+          <ModeToggle />
         </div>
       </div>
     </nav>
