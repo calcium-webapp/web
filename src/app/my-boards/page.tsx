@@ -41,12 +41,6 @@ interface Board {
 }
 
 export default function Boards() {
-  const { data: session } = useSession();
-
-  if (!session) {
-    redirect("/login");
-  }
-
   const [boards, setBoards] = useState<Board[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentBoardIndex, setCurrentBoardIndex] = useState<number>(0);
