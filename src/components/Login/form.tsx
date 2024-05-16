@@ -73,6 +73,7 @@ export function LoginForm() {
       const response = await signIn("credentials", {
         username: values.username,
         password: values.password,
+        redirect: false,
       });
 
       if (response?.error) {
@@ -104,7 +105,7 @@ export function LoginForm() {
       : setGithubBtnDisabled(true);
 
     try {
-      const response = await signIn(provider);
+      const response = await signIn(provider, { redirect: false });
 
       if (response?.error) {
         // Reactive buttons

@@ -1,7 +1,12 @@
-import NextAuth, { Session } from "next-auth";
+import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
+import axios from "axios";
+
+const USERS_DB_URL = process.env.USERS_DB_URL;
+const LOGIN_ENDPOINT = `${USERS_DB_URL}/login`;
+const SIGNUP_SSO_ENDPOINT = `${USERS_DB_URL}/signup/sso`;
 
 const handler = NextAuth({
   providers: [
@@ -19,24 +24,42 @@ const handler = NextAuth({
         username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
-        // Dummy
-        const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
+      async authorize(credentials) {
+        try {
+          // Login POST request to backend
+          const response = await axios.post(LOGIN_ENDPOINT, {
+            username: credentials?.username,
+            password: credentials?.password,
+          });
 
-        if (user) {
-          // Any object returned will be saved in `user` property of the JWT
-          return user;
-        } else {
-          // If you return null then an error will be displayed advising the user to check their details.
-          return null;
+          // Return fetched user
+          return { id: response.data.id, name: response.data.username };
+        } catch (error) {
+          console.error("An error occurred trying to login via creds.");
         }
+
+        // If no user was found
+        return null;
       },
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
+    async signIn({ user, account }) {
+      if (account?.provider === "credentials") {
+        return true;
+      }
+
       // Add register of user in database in case of SSO sign-in
-      if (account?.provider === "google" || account?.provider === "github") {
+      try {
+        // Login POST request to backend
+        const response = await axios.post(SIGNUP_SSO_ENDPOINT, {
+          id: user.id,
+          username: user.name,
+          provider: account?.provider,
+        });
+      } catch (error) {
+        console.error("An error occurred trying to register via SSO.");
+        console.log("Probable registered twice :)");
       }
 
       return true;

@@ -124,7 +124,7 @@ export function RegisterForm() {
       : setGithubBtnDisabled(true);
 
     try {
-      const response = await signIn(provider);
+      const response = await signIn(provider, { redirect: false });
 
       if (response?.error) {
         // Reactive buttons
