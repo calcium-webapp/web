@@ -51,7 +51,6 @@ const handler = NextAuth({
 
       // Add register of user in database in case of SSO sign-in
       try {
-        // Login POST request to backend
         const response = await axios.post(SIGNUP_SSO_ENDPOINT, {
           id: user.id,
           username: user.name,
