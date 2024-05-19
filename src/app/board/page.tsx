@@ -8,6 +8,8 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 
+import { CodeEditor } from "@/components/Board/code-editor/code-editor";
+
 export default function Board() {
   return (
     <div className="flex flex-col h-screen">
@@ -25,6 +27,7 @@ export default function Board() {
             <ResizablePanelGroup direction="vertical">
               <ResizablePanel defaultSize={50} minSize={40} maxSize={60}>
                 {/* Code editor */}
+                <CodeEditor />
               </ResizablePanel>
               <ResizableHandle withHandle />
               <ResizablePanel defaultSize={50}>
