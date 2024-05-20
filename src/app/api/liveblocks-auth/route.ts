@@ -1,6 +1,6 @@
 import { Liveblocks } from "@liveblocks/node";
-
 import { NextRequest } from "next/server";
+import { getServerSession } from "next-auth";
 
 /**
 
@@ -16,16 +16,16 @@ const liveblocks = new Liveblocks({
 
 export async function POST(request: NextRequest) {
   // Get the current user's unique id from your database
-
-  const userId = 4;
+  const nextauth_session = await getServerSession();
+  console.log(nextauth_session);
 
   // Create a session for the current user
 
-  const session = liveblocks.prepareSession(`user-${userId}`, {
+  const session = liveblocks.prepareSession(`mock-user`, {
     userInfo: {
-      name: "Charlie Layne",
+      name: nextauth_session?.user.name,
       color: "#D583F0",
-      picture: "https://liveblocks.io/avatars/avatar-1.png",
+      picture: nextauth_session?.user.image,
     },
   });
 
