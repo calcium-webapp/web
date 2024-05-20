@@ -12,9 +12,9 @@ export function DownloadButton() {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="outline" size="icon">
-            <Download />
-          </Button>
+          <div className="w-5 h-5 cursor-pointer">
+            <Download className="w-5 h-5"/>
+          </div>
         </TooltipTrigger>
         <TooltipContent>
           <p>Download source code</p>

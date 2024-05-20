@@ -5,6 +5,10 @@ import Image from "next/image";
 import { ShareButton } from "./share-button";
 import { ModeToggle } from "../ownui/theme-toggle";
 
+function Avatars() {
+  
+}
+
 export function Navbar() {
   return (
     <nav className="h-14 w-full px-8 border-b border-gray-200 dark:border-white dark:border-opacity-10">

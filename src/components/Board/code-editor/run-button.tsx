@@ -12,9 +12,9 @@ export function RunButton() {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="outline" size="icon">
-            <Play />
-          </Button>
+          <div className="w-5 h-5 cursor-pointer">
+            <Play className="w-5 h-5" />
+          </div>
         </TooltipTrigger>
         <TooltipContent>
           <p>Execute</p>

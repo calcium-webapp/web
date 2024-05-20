@@ -9,7 +9,12 @@ import { python } from "@codemirror/lang-python";
 import { useCallback, useEffect, useState } from "react";
 import LiveblocksProvider from "@liveblocks/yjs";
 import { TypedLiveblocksProvider, useRoom, useSelf } from "@/liveblocks.config";
+import { coolGlow, rosePineDawn } from "thememirror";
 import { Room } from "../Room";
+import { useTheme } from "next-themes";
+import { SiJavascript, SiPython } from "react-icons/si";
+import { DownloadButton } from "./download-button";
+import { RunButton } from "./run-button";
 
 export function CodeEditor() {
   return (
@@ -22,6 +27,7 @@ export function CodeEditor() {
 function Editor() {
   const room = useRoom();
   const [element, setElement] = useState<HTMLElement>();
+  const { resolvedTheme } = useTheme();
 
   // Get user info from Liveblocks authentication endpoint
   const userInfo = useSelf((me) => me.info);
@@ -58,6 +64,7 @@ function Editor() {
 
       extensions: [
         basicSetup,
+        resolvedTheme == "dark" ? coolGlow : rosePineDawn,
         javascript(),
         yCollab(ytext, provider.awareness),
       ],
@@ -74,11 +81,23 @@ function Editor() {
       provider?.destroy();
       view?.destroy();
     };
-  }, [element, room, userInfo]);
+  }, [element, room, userInfo, resolvedTheme]);
 
   return (
-    <div className="flex flex-col relative w-full h-full overflow-hidden text-lg">
-      <div className="overflow-auto relative flex-grow" ref={ref}></div>
-    </div>
+    <>
+      <div className="w-full h-8 flex items-center justify-between px-6">
+        <span className="flex items-center h-full gap-2">
+          <SiJavascript className="text-slate-600" />
+          <span className="text-slate-600 text-sm select-none">index.js</span>
+        </span>
+        <span className="flex items-center h-full gap-2">
+          <RunButton />
+          <DownloadButton />
+        </span>
+      </div>
+      <div className="flex flex-col relative w-full h-full overflow-hidden text-base bg-[#faf4ed] dark:bg-[#060521]">
+        <div className="overflow-auto relative flex-grow" ref={ref}></div>
+      </div>
+    </>
   );
 }
