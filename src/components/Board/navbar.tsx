@@ -4,10 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ShareButton } from "./share-button";
 import { ModeToggle } from "../ownui/theme-toggle";
-
-function Avatars() {
-  
-}
+import { Avatars } from "./avatars";
 
 export function Navbar() {
   return (
@@ -25,6 +22,7 @@ export function Navbar() {
           <span>amazing-spider</span>
         </div>
         <div className="flex items-center gap-2">
+          <Avatars />
           <ShareButton />
           <ModeToggle />
         </div>
