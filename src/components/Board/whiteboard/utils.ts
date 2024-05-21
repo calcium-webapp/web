@@ -1,10 +1,3 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
 import {
   Color,
   Side,
@@ -15,7 +8,7 @@ import {
   XYWH,
   PathLayer,
   Camera,
-} from "@/../types/whiteboard";
+} from "./types";
 
 export function colorToCss(color: Color) {
   return `#${color.r.toString(16).padStart(2, "0")}${color.g

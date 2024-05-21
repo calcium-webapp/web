@@ -1,6 +1,8 @@
 import { createClient } from "@liveblocks/client";
 import { createRoomContext } from "@liveblocks/react";
 import LiveblocksProvider from "@liveblocks/yjs";
+import { Point, Color, Layer } from "@/../types/whiteboard";
+import { LiveList, LiveMap, LiveObject } from "@liveblocks/client";
 
 // Try changing the lostConnectionTimeout value to increase
 // or reduct the time it takes to reconnect
@@ -14,6 +16,10 @@ const client = createClient({
 type Presence = {
   // cursor: { x: number; y: number } | null;
   // ...
+  selection: string[];
+  cursor: Point | null;
+  pencilDraft: [x: number, y: number, pressure: number][] | null;
+  penColor: Color | null;
 };
 
 // Optionally, Storage represents the shared document that persists in the
@@ -23,6 +29,8 @@ type Presence = {
 type Storage = {
   // author: LiveObject<{ firstName: string, lastName: string }>,
   // ...
+  layers: LiveMap<string, LiveObject<Layer>>;
+  layerIds: LiveList<string>;
 };
 
 // Optionally, UserMeta represents static/readonly metadata on each user, as

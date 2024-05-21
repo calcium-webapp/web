@@ -16,7 +16,7 @@ import { SiJavascript, SiPython } from "react-icons/si";
 import { DownloadButton } from "./download-button";
 import { RunButton } from "./run-button";
 
-export function CodeEditor() {
+export default function CodeEditor() {
   return (
     <Room roomId="room-1" fallback="Loading...">
       <Editor />

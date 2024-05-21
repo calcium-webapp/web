@@ -13,7 +13,10 @@ export function Room({ fallback, children, roomId }: RoomProps) {
     <RoomProvider
       id={roomId}
       initialPresence={{
+        selection: [],
         cursor: null,
+        pencilDraft: null,
+        penColor: null,
       }}
     >
       <ClientSideSuspense fallback={fallback}>

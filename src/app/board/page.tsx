@@ -8,7 +8,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 
-import { CodeEditor } from "@/components/Board/code-editor/code-editor";
+import CodeEditor from "@/components/Board/code-editor/code-editor";
 
 export default function Board() {
   return (
@@ -21,6 +21,11 @@ export default function Board() {
         >
           <ResizablePanel defaultSize={50} minSize={40} maxSize={60}>
             {/* Whiteboard */}
+            <iframe
+              width="100%"
+              height="100%"
+              src="/board/whiteboard?roomId=room-1"
+            ></iframe>
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel defaultSize={50}>
@@ -30,9 +35,7 @@ export default function Board() {
                 <CodeEditor />
               </ResizablePanel>
               <ResizableHandle withHandle />
-              <ResizablePanel defaultSize={50}>
-                {/* Terminal */}
-              </ResizablePanel>
+              <ResizablePanel defaultSize={50}>{/* Terminal */}</ResizablePanel>
             </ResizablePanelGroup>
           </ResizablePanel>
         </ResizablePanelGroup>
