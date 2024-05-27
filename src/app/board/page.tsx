@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/resizable";
 
 import CodeEditor from "@/components/Board/code-editor";
-// import Whiteboard from "@/components/Board/whiteboard";
+import Whiteboard from "@/components/Board/whiteboard";
 // import Terminal from "@/components/Board/terminal";
 
 export default function Board() {
@@ -24,6 +24,7 @@ export default function Board() {
         >
           <ResizablePanel defaultSize={50} minSize={40} maxSize={60}>
             {/* Whiteboard */}
+            <Whiteboard />
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel defaultSize={50}>
