@@ -41,9 +41,11 @@ export default function Board() {
               <ResizableHandle withHandle />
               <ResizablePanel defaultSize={50}>
                 {/* Terminal */}
-                <div className="w-full h-full relative">
-                  <Terminal />
-                </div>
+                {/* <iframe
+                  src={`/board/terminal`}
+                  className="w-full h-full"
+                ></iframe> */}
+                <Terminal />
               </ResizablePanel>
             </ResizablePanelGroup>
           </ResizablePanel>
