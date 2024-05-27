@@ -5,9 +5,9 @@ import { Room } from "./Room";
 
 export function Avatars() {
   return (
-    <Room roomId="room-1" fallback="Loading...">
+    // <Room roomId="room-1" fallback="Loading...">
       <AvatarsList />
-    </Room>
+    // </Room>
   );
 }
 
@@ -21,13 +21,13 @@ export function AvatarsList() {
       {users.map(({ connectionId, info }) => {
         if (info)
           return (
-            <Avatar key={connectionId} picture={info.picture} name={info.name} />
+            <div key={connectionId} className="relative ml-8"><Avatar picture={info.picture} name={info.name} /></div>
           );
         else { return <></> }
       })}
 
       {currentUser && (
-        <div className="relative ml-8 first:ml-0">
+        <div className="relative ml-8">
           <Avatar
             picture={currentUser.info.picture}
             name={currentUser.info.name}
