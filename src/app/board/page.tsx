@@ -8,7 +8,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 
-import Whiteboard from "@/components/Board/whiteboard";
+
 // import Terminal from "@/components/Board/terminal";
 
 export default function Board() {
@@ -24,7 +24,10 @@ export default function Board() {
         >
           <ResizablePanel defaultSize={50} minSize={40} maxSize={60}>
             {/* Whiteboard */}
-            {/* <Whiteboard /> */}
+            <iframe
+                  src={`/board/whiteboard?roomId=${roomId}`}
+                  className="w-full h-full"
+                ></iframe>
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel defaultSize={50}>

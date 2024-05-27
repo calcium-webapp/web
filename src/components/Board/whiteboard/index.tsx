@@ -44,14 +44,15 @@ import ToolsBar from "./components/ToolsBar";
 
 const MAX_LAYERS = 100;
 
-export default function Room() {
-  // const roomId = useExampleRoomId(
-  //   "liveblocks:examples:nextjs-whiteboard-advanced"
-  // );
+interface WhiteboardProps {
+  roomId: string;
+}
+
+export default function Whiteboard({ roomId }: WhiteboardProps) {
 
   return (
     <RoomProvider
-      id="room-1"
+      id={roomId}
       initialPresence={{
         selection: [],
         cursor: null,
@@ -555,17 +556,4 @@ function Canvas() {
       />
     </>
   );
-}
-
-/**
- * This function is used when deploying an example on liveblocks.io.
- * You can ignore it completely if you run the example locally.
- */
-function useExampleRoomId(roomId: string) {
-  const { query } = useRouter();
-  const exampleRoomId = useMemo(() => {
-    return query?.exampleId ? `${roomId}-${query.exampleId}` : roomId;
-  }, [query, roomId]);
-
-  return exampleRoomId;
 }
