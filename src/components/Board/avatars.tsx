@@ -19,9 +19,11 @@ export function AvatarsList() {
   return (
     <div className="avatars">
       {users.map(({ connectionId, info }) => {
-        return (
-          <Avatar key={connectionId} picture={info.picture} name={info.name} />
-        );
+        if (info)
+          return (
+            <Avatar key={connectionId} picture={info.picture} name={info.name} />
+          );
+        else { return <></> }
       })}
 
       {currentUser && (
