@@ -1,29 +1,37 @@
-import React, { useEffect, useRef } from "react";
+"use client";
+
+import { useEffect, useRef } from "react";
 import { Terminal } from "@xterm/xterm";
 import { AttachAddon } from "@xterm/addon-attach";
-import { FitAddon } from '@xterm/addon-fit';
+import "@xterm/xterm/css/xterm.css";
 
-export default function ContainerTerminal() {
-  const terminalRef = useRef(null);
+export default function XTerminal() {
+  const terminalRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const terminal = new Terminal();
-    const fitAddon = new FitAddon();
+    if (!terminalRef.current) {
+      return;
+    }
+
+    // Terminal and connection
+    const term = new Terminal({
+      theme: {
+        background: "#faf4ed",
+        foreground: "#000",
+        cursor: "#000"
+      }
+    });
     const socket = new WebSocket(
-        "ws://52.191.114.5:2375/containers/98f04c39d3b8/attach/ws?stream=1&stdout=1&stdin=1&logs=1"
+      "ws://52.191.114.5:2375/containers/98f04c39d3b8/attach/ws?stream=1&stdout=1&stdin=1&stderr=1"
     );
+
+    // Spinning up terminal
     const attachAddon = new AttachAddon(socket);
-    terminal.loadAddon(fitAddon);
-    terminal.loadAddon(attachAddon);
+    term.open(terminalRef.current);
+    term.loadAddon(attachAddon);
 
-    terminal.open(terminalRef.current);
+    term.writeln("#This is your terminal. Click me and press Enter!\r");
+  }, [terminalRef]);
 
-    fitAddon.fit();
-
-    return () => {
-      terminal.dispose();
-    };
-  }, []);
-
-  return <div ref={terminalRef} />;
+  return <div ref={terminalRef} className="w-full h-full absolute"></div>;
 }

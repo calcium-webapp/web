@@ -8,11 +8,10 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 
-
-// import Terminal from "@/components/Board/terminal";
+import Terminal from "@/components/Board/terminal";
 
 export default function Board() {
-  const roomId = "room-1";
+  const roomId = "room-2";
 
   return (
     <div className="flex flex-col h-screen">
@@ -24,23 +23,28 @@ export default function Board() {
         >
           <ResizablePanel defaultSize={50} minSize={40} maxSize={60}>
             {/* Whiteboard */}
-            <iframe
-                  src={`/board/whiteboard?roomId=${roomId}`}
-                  className="w-full h-full"
-                ></iframe>
+            {/* <iframe
+              src={`/board/whiteboard?roomId=${roomId}`}
+              className="w-full h-full"
+            ></iframe> */}
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel defaultSize={50}>
             <ResizablePanelGroup direction="vertical">
               <ResizablePanel defaultSize={50} minSize={40} maxSize={60}>
                 {/* Code editor */}
-                <iframe
+                {/* <iframe
                   src={`/board/code-editor?roomId=${roomId}`}
                   className="w-full h-full"
-                ></iframe>
+                ></iframe> */}
               </ResizablePanel>
               <ResizableHandle withHandle />
-              <ResizablePanel defaultSize={50}>{/* Terminal */}</ResizablePanel>
+              <ResizablePanel defaultSize={50}>
+                {/* Terminal */}
+                <div className="w-full h-full relative">
+                  <Terminal />
+                </div>
+              </ResizablePanel>
             </ResizablePanelGroup>
           </ResizablePanel>
         </ResizablePanelGroup>

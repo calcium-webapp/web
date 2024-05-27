@@ -22,7 +22,7 @@ export function Navbar() {
           <span>amazing-spider</span>
         </div>
         <div className="flex items-center gap-2">
-          <Avatars />
+          {/* <Avatars /> */}
           <ShareButton />
           <ModeToggle />
         </div>
