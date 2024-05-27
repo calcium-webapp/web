@@ -68,7 +68,9 @@ export async function POST(request: NextRequest) {
     userInfo: {
       name: nextauth_session?.user.name,
       color: MOCK_INFO[mockIndex].color,
-      picture: nextauth_session?.user.image ? nextauth_session.user.image : MOCK_INFO[mockIndex].picture,
+      picture: nextauth_session?.user.image
+        ? nextauth_session.user.image
+        : MOCK_INFO[mockIndex].picture,
     },
   });
 

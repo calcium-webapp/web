@@ -49,6 +49,9 @@ const handler = NextAuth({
         return true;
       }
 
+      // Because backend is down
+      return true;
+
       // Add register of user in database in case of SSO sign-in
       try {
         const response = await axios.post(SIGNUP_SSO_ENDPOINT, {
@@ -59,6 +62,8 @@ const handler = NextAuth({
       } catch (error) {
         console.error("An error occurred trying to register via SSO.");
         console.log("Probable registered twice :)");
+
+        
       }
 
       return true;
