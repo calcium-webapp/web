@@ -5,9 +5,9 @@ import { Room } from "./Room";
 
 export function Avatars() {
   return (
-    // <Room roomId="room-1" fallback="Loading...">
+    <Room roomId="room-1" fallback="Loading...">
       <AvatarsList />
-    // </Room>
+    </Room>
   );
 }
 

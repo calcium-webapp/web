@@ -1,7 +1,6 @@
 "use client";
 
 import { Navbar } from "@/components/Board/navbar";
-import { ReactDOM } from "react";
 
 import {
   ResizableHandle,
@@ -9,11 +8,12 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 
-import CodeEditor from "@/components/Board/code-editor";
 import Whiteboard from "@/components/Board/whiteboard";
 // import Terminal from "@/components/Board/terminal";
 
 export default function Board() {
+  const roomId = "room-1";
+
   return (
     <div className="flex flex-col h-screen">
       <Navbar />
@@ -24,19 +24,20 @@ export default function Board() {
         >
           <ResizablePanel defaultSize={50} minSize={40} maxSize={60}>
             {/* Whiteboard */}
-            <Whiteboard />
+            {/* <Whiteboard /> */}
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel defaultSize={50}>
             <ResizablePanelGroup direction="vertical">
               <ResizablePanel defaultSize={50} minSize={40} maxSize={60}>
                 {/* Code editor */}
-                <CodeEditor />
+                <iframe
+                  src={`/board/code-editor?roomId=${roomId}`}
+                  className="w-full h-full"
+                ></iframe>
               </ResizablePanel>
               <ResizableHandle withHandle />
-              <ResizablePanel defaultSize={50}>
-                {/* Terminal */}
-              </ResizablePanel>
+              <ResizablePanel defaultSize={50}>{/* Terminal */}</ResizablePanel>
             </ResizablePanelGroup>
           </ResizablePanel>
         </ResizablePanelGroup>

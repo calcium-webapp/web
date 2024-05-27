@@ -16,9 +16,13 @@ import { SiJavascript, SiPython } from "react-icons/si";
 import { DownloadButton } from "./download-button";
 import { RunButton } from "./run-button";
 
-export default function CodeEditor() {
+interface CodeEditorProps {
+  roomId: string;
+}
+
+export default function CodeEditor({ roomId }: CodeEditorProps) {
   return (
-    <Room roomId="room-1" fallback="Loading...">
+    <Room roomId={roomId} fallback="Loading...">
       <Editor />
     </Room>
   );
