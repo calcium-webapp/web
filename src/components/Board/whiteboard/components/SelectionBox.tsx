@@ -185,4 +185,7 @@ const SelectionBox = memo(
   }
 );
 
+// Avoid error
+SelectionBox.displayName;
+
 export default SelectionBox;

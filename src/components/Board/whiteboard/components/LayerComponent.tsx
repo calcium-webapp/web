@@ -61,4 +61,7 @@ const LayerComponent = memo(
   }
 );
 
+// Avoid error
+LayerComponent.displayName;
+
 export default LayerComponent;
