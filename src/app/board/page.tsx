@@ -14,7 +14,7 @@ import { useSearchParams } from "next/navigation";
 // Delete after :)
 function mockStartContainer() {
   return {
-    name: "amazing-cat",
+    name: "squishy-leopard",
     runtime: "python",
     websocket:
       "ws://52.191.114.5:2375/containers/028a27503d7c/attach/ws?stream=1&stdout=1&stdin=1",
