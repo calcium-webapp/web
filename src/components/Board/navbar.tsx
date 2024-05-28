@@ -5,8 +5,14 @@ import Image from "next/image";
 import { ShareButton } from "./share-button";
 import { ModeToggle } from "../ownui/theme-toggle";
 import { Avatars } from "./avatars";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export function Navbar() {
+interface NavbarProps {
+  name: string;
+  loading: boolean;
+}
+
+export function Navbar({ name, loading }: NavbarProps) {
   return (
     <nav className="h-14 w-full px-8 border-b border-gray-200 dark:border-white dark:border-opacity-10">
       <div className="mx-auto max-w-screen-3xl flex items-center h-full justify-between">
@@ -19,10 +25,10 @@ export function Navbar() {
               <Image src={LogoDark} className="h-[40px] w-[40px]" alt="Logo" />
             </div>
           </Link>
-          <span>amazing-spider</span>
+          {loading ? <Skeleton className="w-36 h-4"/> : <span className="font-bold">{name}</span>}
         </div>
         <div className="flex items-center gap-2">
-          {/* <Avatars /> */}
+          <Avatars />
           <ShareButton />
           <ModeToggle />
         </div>

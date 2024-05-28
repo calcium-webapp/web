@@ -2,10 +2,11 @@ import { useOthers, useSelf } from "@/liveblocks.config";
 import Image from "next/image";
 import "@/styles/avatar.css";
 import { Room } from "./Room";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function Avatars() {
   return (
-    <Room roomId="room-1" fallback="Loading...">
+    <Room roomId="room-1" fallback={<AvatarsSkeleton />}>
       <AvatarsList />
     </Room>
   );
@@ -21,9 +22,13 @@ export function AvatarsList() {
       {users.map(({ connectionId, info }) => {
         if (info)
           return (
-            <div key={connectionId} className="relative ml-8"><Avatar picture={info.picture} name={info.name} /></div>
+            <div key={connectionId} className="relative ml-8">
+              <Avatar picture={info.picture} name={info.name} />
+            </div>
           );
-        else { return <></> }
+        else {
+          return <></>;
+        }
       })}
 
       {currentUser && (
@@ -49,6 +54,16 @@ function Avatar({ picture, name }: { picture: string; name: string }) {
         width={20}
         height={20}
       />
+    </div>
+  );
+}
+
+function AvatarsSkeleton() {
+  return (
+    <div className="avatars">
+      <Skeleton className="w-10 h-10 rounded-full relative ml-[-0.5rem]" />
+      <Skeleton className="w-10 h-10 rounded-full relative ml-[-0.5rem]" />
+      <Skeleton className="w-10 h-10 rounded-full relative ml-[-0.5rem]" />
     </div>
   );
 }

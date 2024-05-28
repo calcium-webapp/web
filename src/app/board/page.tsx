@@ -38,7 +38,7 @@ export default function Board() {
   /* SIMULATED FETCH */
   useEffect(() => {
     // roomId = containerId
-    setRoomId(searchParams.get("roomId"));  // "028a27503d7c"
+    setRoomId(searchParams.get("roomId")); // "028a27503d7c"
 
     const timer = setTimeout(() => {
       fetchContainerData();
@@ -56,7 +56,7 @@ export default function Board() {
 
   return (
     <div className="flex flex-col h-screen">
-      <Navbar />
+      <Navbar name={containerData?.name as string} loading={loading} />
       <main className="flex-1 p-6 overflow-y-hidden">
         <ResizablePanelGroup
           direction="horizontal"
