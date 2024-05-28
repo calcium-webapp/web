@@ -41,6 +41,7 @@ import useDeleteLayers from "./hooks/useDeleteLayers";
 import MultiplayerGuides from "./components/MultiplayerGuides";
 import Path from "./components/Path";
 import ToolsBar from "./components/ToolsBar";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const MAX_LAYERS = 100;
 
@@ -49,7 +50,6 @@ interface WhiteboardProps {
 }
 
 export default function Whiteboard({ roomId }: WhiteboardProps) {
-
   return (
     <RoomProvider
       id={roomId}
@@ -74,13 +74,7 @@ export default function Whiteboard({ roomId }: WhiteboardProps) {
 }
 
 function Loading() {
-  return (
-    <div className={styles.container}>
-      <div className={styles.loading}>
-        <img src="https://liveblocks.io/loading.svg" alt="Loading" />
-      </div>
-    </div>
-  );
+  return <Skeleton className="w-screen h-screen" />;
 }
 
 function Canvas() {
@@ -485,7 +479,7 @@ function Canvas() {
 
   return (
     <>
-      <div className={styles.canvas}>
+      <div className="bg-[#faf4ed] dark:bg-[#060521]">
         <SelectionTools
           isAnimated={
             canvasState.mode !== CanvasMode.Translating &&

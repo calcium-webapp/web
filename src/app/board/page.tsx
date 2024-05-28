@@ -64,10 +64,10 @@ export default function Board() {
         >
           <ResizablePanel defaultSize={50} minSize={40} maxSize={60}>
             {/* Whiteboard */}
-            {/* <iframe
+            <iframe
               src={`/board/whiteboard?roomId=${roomId}`}
               className="w-full h-full"
-            ></iframe> */}
+            ></iframe>
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel defaultSize={50}>

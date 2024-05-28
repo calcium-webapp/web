@@ -16,7 +16,7 @@
 }
 
 .canvas {
-  background-color: var(--color-surface-canvas);
+  /* background-color: var(--color-surface-canvas); */
   /**
     https://stackoverflow.com/questions/48124372/pointermove-event-not-working-with-touch-why-not
 
