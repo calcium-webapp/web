@@ -126,7 +126,7 @@ function Editor({ runtime }: EditorProps) {
       </div>
       <div className="flex flex-col relative w-full h-full overflow-hidden text-base bg-[#faf4ed] dark:bg-[#060521]">
         <motion.div
-          className="overflow-auto relative flex-grow"
+          className="relative flex-grow overflow-auto"
           ref={ref}
           initial={{ opacity: 0, scale: 1.05 }}
           animate={{ opacity: 1, scale: 1 }}
