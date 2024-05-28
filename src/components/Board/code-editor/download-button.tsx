@@ -11,9 +11,10 @@ import { useEffect } from "react";
 
 interface DownloadButtonProps {
   file: Y.Doc;
+  runtime: string;
 }
 
-function saveDoc(file: Y.Doc) {
+function saveDoc(file: Y.Doc, runtime: string) {
   if (!file) {
     return;
   }
@@ -28,14 +29,14 @@ function saveDoc(file: Y.Doc) {
   // Create downloadable
   const a = document.createElement("a");
   a.href = url;
-  a.download = "main.js";
+  a.download = runtime == "node" ? "main.js" : "main.py";
   document.body.appendChild(a);
   a.click();
   window.URL.revokeObjectURL(url);
   document.body.removeChild(a);
 }
 
-export function DownloadButton({ file }: DownloadButtonProps) {
+export function DownloadButton({ file, runtime }: DownloadButtonProps) {
   return (
     <TooltipProvider>
       <Tooltip>
@@ -43,7 +44,7 @@ export function DownloadButton({ file }: DownloadButtonProps) {
           <div
             className="w-5 h-5 cursor-pointer"
             onClick={() => {
-              saveDoc(file);
+              saveDoc(file, runtime);
             }}
           >
             <Download className="w-5 h-5" />

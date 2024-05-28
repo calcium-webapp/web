@@ -20,17 +20,24 @@ import { motion } from "framer-motion";
 
 interface CodeEditorProps {
   roomId: string;
+  runtime: string;
 }
 
-export default function CodeEditor({ roomId }: CodeEditorProps) {
-  return (
+export default function CodeEditor({ roomId, runtime }: CodeEditorProps) {
+  return runtime ? (
     <Room roomId={roomId} fallback={<CodeEditorSkeleton />}>
-      <Editor />
+      <Editor runtime={runtime} />
     </Room>
+  ) : (
+    <CodeEditorSkeleton />
   );
 }
 
-function Editor() {
+interface EditorProps {
+  runtime: string;
+}
+
+function Editor({ runtime }: EditorProps) {
   const room = useRoom();
   const [element, setElement] = useState<HTMLElement>();
   const { resolvedTheme } = useTheme();
@@ -74,7 +81,7 @@ function Editor() {
       extensions: [
         basicSetup,
         resolvedTheme == "dark" ? coolGlow : rosePineDawn,
-        javascript(),
+        runtime == "node" ? javascript() : python(),
         yCollab(ytext, provider.awareness),
       ],
     });
@@ -96,12 +103,25 @@ function Editor() {
     <>
       <div className="w-full h-8 flex items-center justify-between px-6">
         <span className="flex items-center h-full gap-2">
-          <SiJavascript className="text-slate-600" />
-          <span className="text-slate-600 text-sm select-none">main.js</span>
+          {runtime == "node" ? (
+            <>
+              <SiJavascript className="text-slate-600" />
+              <span className="text-slate-600 text-sm select-none">
+                main.js
+              </span>
+            </>
+          ) : (
+            <>
+              <SiPython className="text-slate-600" />
+              <span className="text-slate-600 text-sm select-none">
+                main.py
+              </span>
+            </>
+          )}
         </span>
         <span className="flex items-center h-full gap-2">
           <RunButton />
-          <DownloadButton file={file!} />
+          <DownloadButton file={file!} runtime={runtime}/>
         </span>
       </div>
       <div className="flex flex-col relative w-full h-full overflow-hidden text-base bg-[#faf4ed] dark:bg-[#060521]">

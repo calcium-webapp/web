@@ -15,7 +15,7 @@ import { useSearchParams } from "next/navigation";
 function mockStartContainer() {
   return {
     name: "amazing-cat",
-    runtime: "node",
+    runtime: "python",
     websocket:
       "ws://52.191.114.5:2375/containers/028a27503d7c/attach/ws?stream=1&stdout=1&stdin=1",
   };
@@ -34,8 +34,6 @@ export default function Board() {
   const [containerData, setContainerData] = useState<Container>();
   const [roomId, setRoomId] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-
-  
 
   /* SIMULATED FETCH */
   useEffect(() => {
@@ -77,7 +75,7 @@ export default function Board() {
               <ResizablePanel defaultSize={50} minSize={40} maxSize={60}>
                 {/* Code editor */}
                 <iframe
-                  src={`/board/code-editor?roomId=${roomId}`}
+                  src={`/board/code-editor?roomId=${roomId}&runtime=${containerData?.runtime}`}
                   className="w-full h-full"
                 ></iframe>
               </ResizablePanel>
