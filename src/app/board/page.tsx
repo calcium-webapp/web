@@ -11,7 +11,7 @@ import {
 import Terminal from "@/components/Board/terminal";
 
 export default function Board() {
-  const roomId = "room-2";
+  const roomId = "028a27503d7c";
 
   return (
     <div className="flex flex-col h-screen">
@@ -33,18 +33,14 @@ export default function Board() {
             <ResizablePanelGroup direction="vertical">
               <ResizablePanel defaultSize={50} minSize={40} maxSize={60}>
                 {/* Code editor */}
-                {/* <iframe
+                <iframe
                   src={`/board/code-editor?roomId=${roomId}`}
                   className="w-full h-full"
-                ></iframe> */}
+                ></iframe>
               </ResizablePanel>
               <ResizableHandle withHandle />
               <ResizablePanel defaultSize={50}>
                 {/* Terminal */}
-                {/* <iframe
-                  src={`/board/terminal`}
-                  className="w-full h-full"
-                ></iframe> */}
                 <Terminal />
               </ResizablePanel>
             </ResizablePanelGroup>

@@ -10,20 +10,21 @@ import { useTheme } from "next-themes";
 export default function XTerminal() {
   const terminalRef = useRef<HTMLDivElement | null>(null);
   const { resolvedTheme } = useTheme();
+  const [displayedTerm, setDisplayedTerm] = useState<Terminal | null>(null);
+
+  const lightTheme = {
+    background: "#faf4ed",
+    foreground: "#000",
+    cursor: "#000",
+    selectionBackground: "#000",
+    selectionForeground: "#fff",
+  };
+
+  const darkTheme = {
+    background: "#060521",
+  };
 
   useEffect(() => {
-    const lightTheme = {
-      background: "#faf4ed",
-      foreground: "#000",
-      cursor: "#000",
-      selectionBackground: "#000",
-      selectionForeground: "#fff",
-    };
-
-    const darkTheme = {
-      background: "#060521",
-    };
-
     if (!terminalRef.current) {
       return;
     }
@@ -34,10 +35,11 @@ export default function XTerminal() {
     // Terminal and connection
     const term = new Terminal({
       theme: resolvedTheme == "light" ? lightTheme : darkTheme,
+      cursorBlink: true,
     });
 
     const socket = new WebSocket(
-      "ws://52.191.114.5:2375/containers/98f04c39d3b8/attach/ws?stream=1&stdout=1&stdin=1&stderr=1"
+      "ws://52.191.114.5:2375/containers/028a27503d7c/attach/ws?stream=1&stdout=1&stdin=1"
     );
 
     // Addons
@@ -67,6 +69,18 @@ export default function XTerminal() {
     });
 
     resizeObserver.observe(terminalRef.current);
+
+    // Set term
+    setDisplayedTerm(term);
+  }, []);
+
+  // Change theme and not lose work
+  useEffect(() => {
+    if (!displayedTerm) {
+      return;
+    }
+
+    displayedTerm.options.theme = resolvedTheme == "light" ? lightTheme : darkTheme;
   }, [resolvedTheme]);
 
   return (
