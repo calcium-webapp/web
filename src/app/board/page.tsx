@@ -1,14 +1,13 @@
 "use client";
 
 import { Navbar } from "@/components/Board/navbar";
+import Terminal from "@/components/Board/terminal";
 
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-
-import Terminal from "@/components/Board/terminal";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -36,24 +35,26 @@ export default function Board() {
   const [roomId, setRoomId] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
+  
+
   /* SIMULATED FETCH */
   useEffect(() => {
+    // roomId = containerId
+    setRoomId(searchParams.get("roomId"));  // "028a27503d7c"
+
     const timer = setTimeout(() => {
       fetchContainerData();
-    }, 2000);
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, []);
 
   const fetchContainerData = () => {
-    // roomId = containerId
-    setRoomId(searchParams.get("roomId"));
     // mock fetch
     setContainerData(mockStartContainer());
     setLoading(false);
   };
-
-  // const roomId = "028a27503d7c";
+  /* SIMULATED FETCH */
 
   return (
     <div className="flex flex-col h-screen">
