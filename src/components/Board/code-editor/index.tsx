@@ -32,6 +32,7 @@ function Editor() {
   const room = useRoom();
   const [element, setElement] = useState<HTMLElement>();
   const { resolvedTheme } = useTheme();
+  const [file, setFile] = useState<Y.Doc | null>(null);
 
   // Get user info from Liveblocks authentication endpoint
   const userInfo = useSelf((me) => me.info);
@@ -52,6 +53,8 @@ function Editor() {
 
     // Create Yjs provider and document
     ydoc = new Y.Doc();
+    // Set doc
+    setFile(ydoc);
     provider = new LiveblocksProvider(room as any, ydoc);
     const ytext = ydoc.getText("codemirror");
 
@@ -92,11 +95,11 @@ function Editor() {
       <div className="w-full h-8 flex items-center justify-between px-6">
         <span className="flex items-center h-full gap-2">
           <SiJavascript className="text-slate-600" />
-          <span className="text-slate-600 text-sm select-none">index.js</span>
+          <span className="text-slate-600 text-sm select-none">main.js</span>
         </span>
         <span className="flex items-center h-full gap-2">
           <RunButton />
-          <DownloadButton />
+          <DownloadButton file={file!} />
         </span>
       </div>
       <div className="flex flex-col relative w-full h-full overflow-hidden text-base bg-[#faf4ed] dark:bg-[#060521]">
