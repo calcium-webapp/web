@@ -9,9 +9,51 @@ import {
 } from "@/components/ui/resizable";
 
 import Terminal from "@/components/Board/terminal";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+
+// Delete after :)
+function mockStartContainer() {
+  return {
+    name: "amazing-cat",
+    runtime: "node",
+    websocket:
+      "ws://52.191.114.5:2375/containers/028a27503d7c/attach/ws?stream=1&stdout=1&stdin=1",
+  };
+}
+//
+
+interface Container {
+  name: string;
+  runtime: string;
+  websocket: string;
+}
 
 export default function Board() {
-  const roomId = "028a27503d7c";
+  const searchParams = useSearchParams();
+
+  const [containerData, setContainerData] = useState<Container>();
+  const [roomId, setRoomId] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  /* SIMULATED FETCH */
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchContainerData();
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const fetchContainerData = () => {
+    // roomId = containerId
+    setRoomId(searchParams.get("roomId"));
+    // mock fetch
+    setContainerData(mockStartContainer());
+    setLoading(false);
+  };
+
+  // const roomId = "028a27503d7c";
 
   return (
     <div className="flex flex-col h-screen">
@@ -41,7 +83,10 @@ export default function Board() {
               <ResizableHandle withHandle />
               <ResizablePanel defaultSize={50}>
                 {/* Terminal */}
-                <Terminal />
+                <Terminal
+                  websocketUrl={containerData?.websocket as string}
+                  loading={loading}
+                />
               </ResizablePanel>
             </ResizablePanelGroup>
           </ResizablePanel>

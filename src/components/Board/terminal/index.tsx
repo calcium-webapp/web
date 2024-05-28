@@ -6,8 +6,15 @@ import { AttachAddon } from "@xterm/addon-attach";
 import { FitAddon } from "@xterm/addon-fit";
 import "@xterm/xterm/css/xterm.css";
 import { useTheme } from "next-themes";
+import { Skeleton } from "@/components/ui/skeleton";
+import { motion } from "framer-motion";
 
-export default function XTerminal() {
+interface XTerminalProps {
+  loading: boolean;
+  websocketUrl: string;
+}
+
+export default function XTerminal({ loading, websocketUrl }: XTerminalProps) {
   const terminalRef = useRef<HTMLDivElement | null>(null);
   const { resolvedTheme } = useTheme();
   const [displayedTerm, setDisplayedTerm] = useState<Terminal | null>(null);
@@ -25,6 +32,10 @@ export default function XTerminal() {
   };
 
   useEffect(() => {
+    if (loading) {
+      return;
+    }
+
     if (!terminalRef.current) {
       return;
     }
@@ -38,9 +49,7 @@ export default function XTerminal() {
       cursorBlink: true,
     });
 
-    const socket = new WebSocket(
-      "ws://52.191.114.5:2375/containers/028a27503d7c/attach/ws?stream=1&stdout=1&stdin=1"
-    );
+    const socket = new WebSocket(websocketUrl!);
 
     // Addons
     const attachAddon = new AttachAddon(socket);
@@ -72,7 +81,7 @@ export default function XTerminal() {
 
     // Set term
     setDisplayedTerm(term);
-  }, []);
+  }, [loading]);
 
   // Change theme and not lose work
   useEffect(() => {
@@ -80,13 +89,39 @@ export default function XTerminal() {
       return;
     }
 
-    displayedTerm.options.theme = resolvedTheme == "light" ? lightTheme : darkTheme;
+    displayedTerm.options.theme =
+      resolvedTheme == "light" ? lightTheme : darkTheme;
   }, [resolvedTheme]);
 
-  return (
-    <div
+  return loading ? (
+    <XTerminalSkeleton />
+  ) : (
+    <motion.div
       ref={terminalRef}
       className="w-full h-full p-3 bg-[#faf4ed] dark:bg-[#060521]"
-    ></div>
+      initial={{ opacity: 0, scale: 1.05 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        duration: 0.8,
+        delay: 0,
+        ease: [0, 0.71, 0.2, 1.01],
+        scale: {
+          type: "spring",
+          damping: 10,
+          stiffness: 200,
+          restDelta: 0.001,
+        },
+      }}
+    ></motion.div>
+  );
+}
+
+function XTerminalSkeleton() {
+  return (
+    <div className="w-full h-full relative p-3">
+      <Skeleton className="w-56 h-4 inline-block mr-1" />
+      <Skeleton className="w-20 h-4 inline-block" />
+      <Skeleton className="w-full h-full" />
+    </div>
   );
 }
