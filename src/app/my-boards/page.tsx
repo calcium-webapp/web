@@ -9,35 +9,10 @@ import { useEffect, useState } from "react";
 import { Spinner } from "@/components/ownui/spinner";
 import { SearchX, Frown } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
-
-// (Temporal, for testing)
-import {
-  uniqueNamesGenerator,
-  adjectives,
-  animals,
-} from "unique-names-generator";
-
-function generateBoards(n: number) {
-  var boards = [];
-  for (var i = 0; i < n; i++) {
-    boards.push({
-      name: uniqueNamesGenerator({
-        dictionaries: [adjectives, animals],
-        separator: "-",
-        length: 2,
-      }),
-      id: "",
-    });
-  }
-
-  return boards;
-}
-// (end temporal)
 
 interface Board {
   name: string;
-  id: string;
+  containerId: string;
 }
 
 export default function Boards() {
@@ -45,23 +20,45 @@ export default function Boards() {
   const [loading, setLoading] = useState<boolean>(true);
   const [currentBoardIndex, setCurrentBoardIndex] = useState<number>(0);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const { data: session } = useSession();
 
   // Handle search on input
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
-  /* SIMULATED FETCH */
+  /* FETCH */
   useEffect(() => {
     fetchBoards();
-  }, []);
+  }, [session]);
 
-  const fetchBoards = () => {
-    const fetchedBoards = generateBoards(10);
-    setBoards(fetchedBoards);
+  const fetchBoards = async () => {
+    if (!session) {
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/board/list", {
+        method: "POST",
+        body: JSON.stringify({
+          id: session.user.id,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        setBoards(responseData.boards);
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+
     setLoading(false);
   };
-  /* END SIMULATED FETCH */
+  /* FETCH */
 
   // Delay boards a certain time between them
   useEffect(() => {
@@ -95,7 +92,11 @@ export default function Boards() {
                   )
                   .slice(0, currentBoardIndex + 1)
                   .map((board, index) => (
-                    <Board key={index} name={board.name} id={board.id} />
+                    <Board
+                      key={index}
+                      name={board.name}
+                      id={board.containerId}
+                    />
                   ))
               )}
               {!loading &&

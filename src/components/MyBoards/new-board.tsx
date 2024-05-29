@@ -26,6 +26,7 @@ import { FaPython, FaNodeJs } from "react-icons/fa";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
 export function NewBoard() {
   const suggestedName = uniqueNamesGenerator({
@@ -39,6 +40,7 @@ export function NewBoard() {
   const { data: session } = useSession();
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
+  const { toast } = useToast();
 
   async function handleCreate(name: string, runtime: string, id: string) {
     if (!name || !id) {
@@ -65,6 +67,11 @@ export function NewBoard() {
 
         router.push(`/board?roomId=${responseData.containerId}`);
       } else {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with your request.",
+        });
       }
     } catch (error) {
       console.error("An error occurred:", error);

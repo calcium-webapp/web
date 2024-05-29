@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
         userId: requestData.id
     });
 
-    console.log(response);
+    console.log("\nContainer created! ID: " + response.data.containerId + "\n");
 
     return NextResponse.json({containerId: response.data.containerId}, { status: 200 });
   } catch (error) {
