@@ -4,9 +4,17 @@ import "@/styles/avatar.css";
 import { Room } from "./Room";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export function Avatars() {
+interface AvatarsProps {
+  roomId: string;
+}
+
+export function Avatars({ roomId }: AvatarsProps) {
+  if (!roomId) {
+    return <AvatarsSkeleton />;
+  }
+
   return (
-    <Room roomId="room-1" fallback={<AvatarsSkeleton />}>
+    <Room roomId={roomId} fallback={<AvatarsSkeleton />}>
       <AvatarsList />
     </Room>
   );

@@ -10,9 +10,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 interface NavbarProps {
   name: string;
   loading: boolean;
+  roomId: string;
 }
 
-export function Navbar({ name, loading }: NavbarProps) {
+export function Navbar({ name, loading, roomId }: NavbarProps) {
   return (
     <nav className="h-14 w-full px-8 border-b border-gray-200 dark:border-white dark:border-opacity-10">
       <div className="mx-auto max-w-screen-3xl flex items-center h-full justify-between">
@@ -25,10 +26,14 @@ export function Navbar({ name, loading }: NavbarProps) {
               <Image src={LogoDark} className="h-[40px] w-[40px]" alt="Logo" />
             </div>
           </Link>
-          {loading ? <Skeleton className="w-36 h-4"/> : <span className="font-bold">{name}</span>}
+          {loading ? (
+            <Skeleton className="w-36 h-4" />
+          ) : (
+            <span className="font-bold">{name}</span>
+          )}
         </div>
         <div className="flex items-center gap-2">
-          <Avatars />
+          <Avatars roomId={roomId} />
           <ShareButton />
           <ModeToggle />
         </div>

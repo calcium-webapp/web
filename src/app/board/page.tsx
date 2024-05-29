@@ -70,7 +70,7 @@ export default function Board() {
 
   return (
     <div className="flex flex-col h-screen">
-      <Navbar name={containerData?.name as string} loading={loading} />
+      <Navbar name={containerData?.name as string} roomId={roomId!} loading={loading} />
       <main className="flex-1 p-6 overflow-y-hidden">
         <ResizablePanelGroup
           direction="horizontal"
