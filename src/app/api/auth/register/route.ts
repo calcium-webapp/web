@@ -9,16 +9,12 @@ export async function POST(request: NextRequest) {
     // Extract data from the request
     const requestData = await request.json();
 
-    console.log(requestData);
-
     // Make a POST request to the database endpoint
     const response = await axios.post(SIGNUP_ENDPOINT, {
       userName: requestData.username,
       email: requestData.email,
       password: requestData.password
     });
-
-    console.log(response);
 
     return NextResponse.json("Register via creds. successful", { status: 200 });
   } catch (error) {
