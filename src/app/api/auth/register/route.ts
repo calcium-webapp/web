@@ -9,6 +9,8 @@ export async function POST(request: NextRequest) {
     // Extract data from the request
     const requestData = await request.json();
 
+    console.log(USERS_DB_URL);
+
     // Make a POST request to the database endpoint
     const response = await axios.post(SIGNUP_ENDPOINT, {
       userName: requestData.username,

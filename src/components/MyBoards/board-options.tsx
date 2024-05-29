@@ -20,12 +20,54 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
+import { useToast } from "@/components/ui/use-toast";
+import { Loader2 } from "lucide-react";
+import { Dispatch, SetStateAction } from "react";
 
 interface RenameDialogContentProps {
   name: string;
 }
 
 function RenameDialogContent({ name }: RenameDialogContentProps) {
+  const [newName, setNewName] = useState<string>(name);
+  const { toast } = useToast();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  async function handleRename() {
+    if (newName == "") {
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/board/rename", {
+        method: "POST",
+        body: JSON.stringify({
+          name: name,
+          newName: newName,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        window.location.reload();
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with your request.",
+        });
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+
+    setLoading(false);
+  }
+
   return (
     <>
       <DialogHeader>
@@ -37,12 +79,24 @@ function RenameDialogContent({ name }: RenameDialogContentProps) {
           Rename this board. Click save when you&apos;re done.
         </DialogDescription>
       </DialogHeader>
-      <Input value={name}></Input>
+      <Input
+        defaultValue={name}
+        onChange={(evt) => {
+          setNewName(evt.target.value);
+        }}
+      ></Input>
       <DialogFooter>
         <DialogClose asChild>
           <Button variant="outline">Cancel</Button>
         </DialogClose>
-        <Button>Save</Button>
+        {loading ? (
+          <Button disabled>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Save
+          </Button>
+        ) : (
+          <Button onClick={() => handleRename()}>Save</Button>
+        )}
       </DialogFooter>
     </>
   );

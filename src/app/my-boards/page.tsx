@@ -106,7 +106,7 @@ export default function Boards() {
                   <div className="col-span-3 flex justify-center text-gray-500">
                     {boards.length === 0 ? (
                       <>
-                        <span>No boards available</span>
+                        <span>You have no boards yet</span>
                         <Frown className="ml-2 h-6 w-6 inline-block" />
                       </>
                     ) : (

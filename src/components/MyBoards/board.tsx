@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { useAnimate } from "framer-motion";
 import { useState, useMemo } from "react";
 import { set } from "react-hook-form";
+import { Dispatch, SetStateAction } from "react";
 
 interface BoardProps {
   name: string;
