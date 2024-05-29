@@ -5,7 +5,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
 
 const USERS_DB_URL = process.env.USERS_DB_URL;
-const LOGIN_ENDPOINT = `${USERS_DB_URL}/login`;
+const LOGIN_ENDPOINT = `${USERS_DB_URL}/user/login`;
 const SIGNUP_SSO_ENDPOINT = `${USERS_DB_URL}/signup/sso`;
 
 const handler = NextAuth({
@@ -28,12 +28,12 @@ const handler = NextAuth({
         try {
           // Login POST request to backend
           const response = await axios.post(LOGIN_ENDPOINT, {
-            username: credentials?.username,
+            userName: credentials?.username,
             password: credentials?.password,
           });
 
           // Return fetched user
-          return { id: response.data.id, name: response.data.username };
+          return { id: response.data.userId, name: response.data.userName };
         } catch (error) {
           console.error("An error occurred trying to login via creds.");
         }
@@ -62,8 +62,6 @@ const handler = NextAuth({
       } catch (error) {
         console.error("An error occurred trying to register via SSO.");
         console.log("Probable registered twice :)");
-
-        
       }
 
       return true;
