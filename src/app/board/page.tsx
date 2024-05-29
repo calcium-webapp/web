@@ -11,17 +11,6 @@ import {
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-// Delete after :)
-function mockStartContainer() {
-  return {
-    name: "squishy-leopard",
-    runtime: "python",
-    websocket:
-      "ws://52.191.114.5:2375/containers/028a27503d7c/attach/ws?stream=1&stdout=1&stdin=1",
-  };
-}
-//
-
 interface Container {
   name: string;
   runtime: string;
@@ -39,17 +28,42 @@ export default function Board() {
   useEffect(() => {
     // roomId = containerId
     setRoomId(searchParams.get("roomId")); // "028a27503d7c"
+    fetchContainerData();
+  }, [roomId]);
 
-    const timer = setTimeout(() => {
-      fetchContainerData();
-    }, 5000);
+  const fetchContainerData = async () => {
+    if (!roomId) {
+      return;
+    }
 
-    return () => clearTimeout(timer);
-  }, []);
+    try {
+      const response = await fetch("/api/board/start", {
+        method: "POST",
+        body: JSON.stringify({
+          containerId: roomId,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-  const fetchContainerData = () => {
-    // mock fetch
-    setContainerData(mockStartContainer());
+      if (response.ok) {
+        const responseData = await response.json();
+
+        const formattedData = {
+          name: responseData.board.name,
+          runtime: responseData.board.data.runtime,
+          websocket: responseData.board.data.websocket,
+        };
+
+        console.log("\nWEBSOCKET: " + responseData.board.data.websocket + "\n");
+
+        setContainerData(formattedData);
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+
     setLoading(false);
   };
   /* SIMULATED FETCH */
