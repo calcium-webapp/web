@@ -61,7 +61,7 @@ export function Board({ name, id }: BoardProps) {
               {name}
             </span>
           </div>
-          <BoardOptions name={name} />
+          <BoardOptions name={name} id={id} />
         </div>
       </AspectRatio>
     </motion.div>

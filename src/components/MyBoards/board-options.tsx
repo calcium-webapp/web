@@ -102,7 +102,44 @@ function RenameDialogContent({ name }: RenameDialogContentProps) {
   );
 }
 
-function DeleteDialogContent() {
+interface DeleteDialogContentProps {
+  id: string;
+}
+
+function DeleteDialogContent({ id }: DeleteDialogContentProps) {
+  const { toast } = useToast();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  async function handleDelete() {
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/board/delete", {
+        method: "POST",
+        body: JSON.stringify({
+          containerId: id,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        window.location.reload();
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with your request.",
+        });
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+
+    setLoading(false);
+  }
+
   return (
     <>
       <DialogHeader>
@@ -118,7 +155,16 @@ function DeleteDialogContent() {
         <DialogClose asChild>
           <Button variant="outline">Cancel</Button>
         </DialogClose>
-        <Button variant="destructive">Delete</Button>
+        {loading ? (
+          <Button disabled variant="destructive">
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Delete
+          </Button>
+        ) : (
+          <Button variant="destructive" onClick={() => handleDelete()}>
+            Delete
+          </Button>
+        )}
       </DialogFooter>
     </>
   );
@@ -126,9 +172,10 @@ function DeleteDialogContent() {
 
 interface BoardOptionsProps {
   name: string;
+  id: string;
 }
 
-export function BoardOptions({ name }: BoardOptionsProps) {
+export function BoardOptions({ name, id }: BoardOptionsProps) {
   const [dialogOption, setDialogOption] = useState<string | null>(null);
 
   const handleClick = (item: string) => {
@@ -160,7 +207,7 @@ export function BoardOptions({ name }: BoardOptionsProps) {
       </DropdownMenu>
       <DialogContent>
         {dialogOption === "Rename" && <RenameDialogContent name={name} />}
-        {dialogOption === "Delete" && <DeleteDialogContent />}
+        {dialogOption === "Delete" && <DeleteDialogContent id={id} />}
       </DialogContent>
     </Dialog>
   );
