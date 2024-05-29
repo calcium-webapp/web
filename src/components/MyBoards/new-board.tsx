@@ -1,5 +1,6 @@
 "use client";
 
+import { Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -22,14 +23,55 @@ import {
 } from "@/components/ui/dialog";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { FaPython, FaNodeJs } from "react-icons/fa";
-import { SiJupyter } from "react-icons/si";
+import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export function NewBoard() {
-  const boardName = uniqueNamesGenerator({
+  const suggestedName = uniqueNamesGenerator({
     dictionaries: [adjectives, animals],
     separator: "-",
     length: 2,
   });
+
+  const [name, setName] = useState<string>(suggestedName);
+  const [runtime, setRuntime] = useState<string>("node");
+  const { data: session } = useSession();
+  const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
+
+  async function handleCreate(name: string, runtime: string, id: string) {
+    if (!name || !id) {
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/board/create", {
+        method: "POST",
+        body: JSON.stringify({
+          name: name,
+          runtime: runtime,
+          id: id,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+
+        router.push(`/board?roomId=${responseData.containerId}`);
+      } else {
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+
+    setLoading(false);
+  }
 
   return (
     <Dialog>
@@ -50,11 +92,24 @@ export function NewBoard() {
         </DialogHeader>
         <div className="grid w-full items-center gap-1.5">
           <Label htmlFor="email">Name</Label>
-          <Input type="text" value={boardName} />
+          <Input
+            type="text"
+            defaultValue={name}
+            onChange={(evt) => {
+              setName(evt.target.value);
+            }}
+          />
         </div>
         <div className="grid w-full items-center gap-1.5">
           <Label htmlFor="email">Runtime type</Label>
-          <ToggleGroup type="single" className="">
+          <ToggleGroup
+            type="single"
+            className=""
+            value={runtime}
+            onValueChange={(runtime) => {
+              if (runtime) setRuntime(runtime);
+            }}
+          >
             <ToggleGroupItem
               value="python"
               className="w-20 h-20 flex flex-col gap-1"
@@ -63,18 +118,11 @@ export function NewBoard() {
               <span>Python</span>
             </ToggleGroupItem>
             <ToggleGroupItem
-              value="nodejs"
+              value="node"
               className="w-20 h-20 flex flex-col gap-1"
             >
               <FaNodeJs className="text-5xl" />
               <span>Node</span>
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="jupyter"
-              className="w-20 h-20 flex flex-col gap-1"
-            >
-              <SiJupyter className="text-5xl" />
-              <span>Jupyter</span>
             </ToggleGroupItem>
           </ToggleGroup>
         </div>
@@ -82,7 +130,18 @@ export function NewBoard() {
           <DialogClose asChild>
             <Button variant="outline">Cancel</Button>
           </DialogClose>
-          <Button>Create</Button>
+          {loading ? (
+            <Button disabled>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Create
+            </Button>
+          ) : (
+            <Button
+              onClick={() => handleCreate(name, runtime, session?.user.id!)}
+            >
+              Create
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
