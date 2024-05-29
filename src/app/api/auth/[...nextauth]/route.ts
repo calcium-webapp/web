@@ -6,7 +6,7 @@ import axios from "axios";
 
 const USERS_DB_URL = process.env.USERS_DB_URL;
 const LOGIN_ENDPOINT = `${USERS_DB_URL}/user/login`;
-const SIGNUP_SSO_ENDPOINT = `${USERS_DB_URL}/signup/sso`;
+const SIGNUP_SSO_ENDPOINT = `${USERS_DB_URL}/user/signup/sso`;
 
 const handler = NextAuth({
   providers: [
@@ -49,14 +49,11 @@ const handler = NextAuth({
         return true;
       }
 
-      // Because backend is down
-      return true;
-
       // Add register of user in database in case of SSO sign-in
       try {
         const response = await axios.post(SIGNUP_SSO_ENDPOINT, {
           id: user.id,
-          username: user.name,
+          email: user.email,
           provider: account?.provider,
         });
       } catch (error) {
