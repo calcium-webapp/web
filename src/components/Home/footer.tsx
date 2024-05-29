@@ -11,11 +11,11 @@ export function Footer() {
         ,{" "}
         <a className="font-bold" href="https://github.com/Rcgil30">
           Rcgil30
-        </a>
-        and {" "}
+        </a>{" "}
+        and{" "}
         <a className="font-bold" href="https://github.com/FiboDev">
           FiboDev
-        </a>{" "}
+        </a>
       </p>
     </div>
   );
