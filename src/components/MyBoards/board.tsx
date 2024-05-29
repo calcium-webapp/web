@@ -4,10 +4,8 @@ import "@/styles/board.css";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { BoardOptions } from "./board-options";
 import { motion } from "framer-motion";
-import { useAnimate } from "framer-motion";
 import { useState, useMemo } from "react";
-import { set } from "react-hook-form";
-import { Dispatch, SetStateAction } from "react";
+import Link from "next/link";
 
 interface BoardProps {
   name: string;
@@ -44,17 +42,19 @@ export function Board({ name, id }: BoardProps) {
       }}
     >
       <AspectRatio ratio={16 / 9}>
-        <motion.div
-          className={`preview ${randomBg} h-3/4 w-full rounded-t-lg cursor-pointer`}
-          onHoverStart={() => {
-            setScale(1.05);
-            setShadow("hover:shadow-2xl");
-          }}
-          onHoverEnd={() => {
-            setScale(1);
-            setShadow("");
-          }}
-        ></motion.div>
+        <Link href={`/board?roomId=${id}`}>
+          <motion.div
+            className={`preview ${randomBg} h-3/4 w-full rounded-t-lg cursor-pointer`}
+            onHoverStart={() => {
+              setScale(1.05);
+              setShadow("hover:shadow-2xl");
+            }}
+            onHoverEnd={() => {
+              setScale(1);
+              setShadow("");
+            }}
+          ></motion.div>
+        </Link>
         <div className="info h-1/4 w-full rounded-b-lg border-2 bg-background flex justify-between items-center px-3">
           <div className="board-name">
             <span className="font-bold text-gray-600 dark:text-gray-100">
