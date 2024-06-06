@@ -8,5 +8,6 @@ export default function Page() {
   const roomId = "codeeditor:" + searchParams.get("roomId");
   const runtime = searchParams.get("runtime");
 
-  return <CodeEditor roomId={roomId!} runtime={runtime!} />;
+  // return <CodeEditor roomId={roomId!} runtime={runtime!} />;
+  return <></>;
 }
