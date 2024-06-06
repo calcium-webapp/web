@@ -25,7 +25,7 @@ interface CodeEditorProps {
 
 export default function CodeEditor({ roomId, runtime }: CodeEditorProps) {
   return runtime ? (
-    <Room roomId={roomId} fallback={<CodeEditorSkeleton />}>
+    <Room roomId={"codeeditor:" + roomId} fallback={<CodeEditorSkeleton />}>
       <Editor runtime={runtime} />
     </Room>
   ) : (
@@ -100,8 +100,8 @@ function Editor({ runtime }: EditorProps) {
   }, [element, room, userInfo, resolvedTheme]);
 
   return (
-    <>
-      <div className="w-full h-8 flex items-center justify-between px-6">
+    <div className="w-full h-full relative">
+      <div className="w-full h-8 flex items-center justify-between px-6 absolute z-10 top-0">
         <span className="flex items-center h-full gap-2">
           {runtime == "node" ? (
             <>
@@ -124,7 +124,7 @@ function Editor({ runtime }: EditorProps) {
           <DownloadButton file={file!} runtime={runtime}/>
         </span>
       </div>
-      <div className="flex flex-col relative w-full h-full overflow-hidden text-base bg-[#faf4ed] dark:bg-[#060521]">
+      <div className="flex relative flex-col w-full h-full overflow-hidden text-base bg-[#faf4ed] dark:bg-[#060521] pt-8">
         <motion.div
           className="relative flex-grow overflow-auto"
           ref={ref}
@@ -143,7 +143,7 @@ function Editor({ runtime }: EditorProps) {
           }}
         ></motion.div>
       </div>
-    </>
+    </div>
   );
 }
 

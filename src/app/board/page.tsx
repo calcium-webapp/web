@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/resizable";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import CodeEditor from "@/components/Board/code-editor";
 
 interface Container {
   name: string;
@@ -70,7 +71,11 @@ export default function Board() {
 
   return (
     <div className="flex flex-col h-screen">
-      <Navbar name={containerData?.name as string} roomId={roomId!} loading={loading} />
+      <Navbar
+        name={containerData?.name as string}
+        roomId={roomId!}
+        loading={loading}
+      />
       <main className="flex-1 p-6 overflow-y-hidden">
         <ResizablePanelGroup
           direction="horizontal"
@@ -88,10 +93,14 @@ export default function Board() {
             <ResizablePanelGroup direction="vertical">
               <ResizablePanel defaultSize={50} minSize={40} maxSize={60}>
                 {/* Code editor */}
-                <iframe
+                {/* <iframe
                   src={`/board/code-editor?roomId=${roomId}&runtime=${containerData?.runtime}`}
                   className="w-full h-full"
-                ></iframe>
+                ></iframe> */}
+                <CodeEditor
+                  roomId={roomId!}
+                  runtime={containerData?.runtime!}
+                />
               </ResizablePanel>
               <ResizableHandle withHandle />
               <ResizablePanel defaultSize={50}>
