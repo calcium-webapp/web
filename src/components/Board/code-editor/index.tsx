@@ -21,12 +21,13 @@ import { motion } from "framer-motion";
 interface CodeEditorProps {
   roomId: string;
   runtime: string;
+  ws: WebSocket;
 }
 
-export default function CodeEditor({ roomId, runtime }: CodeEditorProps) {
+export default function CodeEditor({ roomId, runtime, ws }: CodeEditorProps) {
   return runtime ? (
     <Room roomId={"codeeditor:" + roomId} fallback={<CodeEditorSkeleton />}>
-      <Editor runtime={runtime} />
+      <Editor runtime={runtime} ws={ws} />
     </Room>
   ) : (
     <CodeEditorSkeleton />
@@ -35,9 +36,10 @@ export default function CodeEditor({ roomId, runtime }: CodeEditorProps) {
 
 interface EditorProps {
   runtime: string;
+  ws: WebSocket;
 }
 
-function Editor({ runtime }: EditorProps) {
+function Editor({ runtime, ws }: EditorProps) {
   const room = useRoom();
   const [element, setElement] = useState<HTMLElement>();
   const { resolvedTheme } = useTheme();
@@ -120,8 +122,8 @@ function Editor({ runtime }: EditorProps) {
           )}
         </span>
         <span className="flex items-center h-full gap-2">
-          <RunButton />
-          <DownloadButton file={file!} runtime={runtime}/>
+          <RunButton runtime={runtime} ws={ws} />
+          <DownloadButton file={file!} runtime={runtime} />
         </span>
       </div>
       <div className="flex relative flex-col w-full h-full overflow-hidden text-base bg-[#faf4ed] dark:bg-[#060521] pt-8">

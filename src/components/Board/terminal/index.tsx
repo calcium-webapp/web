@@ -10,9 +10,14 @@ import { motion } from "framer-motion";
 interface XTerminalProps {
   loading: boolean;
   websocketUrl: string;
+  setGlobalWs: (socket: WebSocket) => void;
 }
 
-export default function XTerminal({ loading, websocketUrl }: XTerminalProps) {
+export default function XTerminal({
+  loading,
+  websocketUrl,
+  setGlobalWs,
+}: XTerminalProps) {
   const terminalRef = useRef<HTMLDivElement | null>(null);
   const { resolvedTheme } = useTheme();
   const [displayedTerm, setDisplayedTerm] = useState<Terminal | null>(null);
@@ -86,6 +91,9 @@ export default function XTerminal({ loading, websocketUrl }: XTerminalProps) {
 
       // Set term
       setDisplayedTerm(term);
+
+      // Global websocket
+      setGlobalWs(socket);
     };
     initTerminal();
   }, [loading]);

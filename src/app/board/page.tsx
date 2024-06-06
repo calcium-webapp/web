@@ -8,7 +8,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import CodeEditor from "@/components/Board/code-editor";
 
@@ -24,11 +24,11 @@ export default function Board() {
   const [containerData, setContainerData] = useState<Container>();
   const [roomId, setRoomId] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [globalWs, setGlobalWs] = useState<WebSocket | null>(null);
 
-  /* SIMULATED FETCH */
   useEffect(() => {
     // roomId = containerId
-    setRoomId(searchParams.get("roomId")); // "028a27503d7c"
+    setRoomId(searchParams.get("roomId"));
     fetchContainerData();
   }, [roomId]);
 
@@ -67,7 +67,6 @@ export default function Board() {
 
     setLoading(false);
   };
-  /* SIMULATED FETCH */
 
   return (
     <div className="flex flex-col h-screen">
@@ -100,6 +99,7 @@ export default function Board() {
                 <CodeEditor
                   roomId={roomId!}
                   runtime={containerData?.runtime!}
+                  ws={globalWs!}
                 />
               </ResizablePanel>
               <ResizableHandle withHandle />
@@ -107,6 +107,7 @@ export default function Board() {
                 {/* Terminal */}
                 <Terminal
                   websocketUrl={containerData?.websocket as string}
+                  setGlobalWs={setGlobalWs}
                   loading={loading}
                 />
               </ResizablePanel>
