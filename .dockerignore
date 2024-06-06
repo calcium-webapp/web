@@ -1,0 +1,24 @@
+# dependencies
+node_modules
+
+# build
+.next
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# local env files
+.env*.local
+.env
+
+# git
+.git
+.gitignore
+
+# docker
+Dockerfile
+docker-compose.yml

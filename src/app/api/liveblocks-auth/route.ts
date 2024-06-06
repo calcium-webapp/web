@@ -52,11 +52,11 @@ const MOCK_INFO = [
   },
 ];
 
-const liveblocks = new Liveblocks({
-  secret: process.env.LIVEBLOCKS_SECRET_KEY!,
-});
-
 export async function POST(request: NextRequest) {
+  const liveblocks = new Liveblocks({
+    secret: process.env.LIVEBLOCKS_SECRET_KEY!,
+  });
+  
   // Get the current user's unique id from your database
   const nextauth_session = await getServerSession();
 
